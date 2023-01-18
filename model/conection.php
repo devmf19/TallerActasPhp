@@ -2,12 +2,12 @@
 
 class Conection
 {
-    static public function conect()
+    public static function conect()
     {
         $host = "localhost";
         $dbName = "actas";
         $user = "root";
-        $password = "";
+        $password = "root";
         
         try {
             return new PDO("mysql:host={$host};dbname={$dbName}", "{$user}", "{$password}");
@@ -16,4 +16,8 @@ class Conection
             die();
         }
     }
+
+    
+
+
 }

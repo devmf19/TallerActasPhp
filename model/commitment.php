@@ -2,14 +2,14 @@
 
 require_once 'conection.php';
 
-class User {
+class Commitment {
 
-    public function toJson($name, $data) {
+    public static function toJson($name, $data) {
         header('Content-type:application/json;charset=utf-8');
         return json_encode($data, JSON_UNESCAPED_SLASHES);
     }
 
-    public function toJson2($name, $data){
+    public static function toJson2($name, $data){
         header('Content-type:application/json;charset=utf-8');
         return json_encode([
             $name => $data
@@ -17,7 +17,7 @@ class User {
     }
 
     public static function getAll() {
-        $table = "users";
+        $table = "commitment";
         $sql = "SELECT * FROM {$table}";
         $stmt = Conection::conect()->prepare($sql);
         $stmt->execute();
@@ -27,7 +27,7 @@ class User {
     }
 
     public static function getBy($colum, $value) {
-        $table = "users";
+        $table = "commitment";
         if(is_string($value)){
             $value = '"' . $value . '"';
         }
@@ -45,39 +45,37 @@ class User {
     }
 
     public static function save($data) {
-        $table = "users";
-        $sql = "INSERT INTO {$table} (id, username, password, name, lastname, tipoid) VALUES (?,?,?,?,?,?)";
+        $table = "commitment";
+        $sql = "INSERT INTO {$table} (acta_id, in_charge, description, start_date, end_date) VALUES (?,?,?,?,?)";
         $stmt = Conection::conect()->prepare($sql);
 
-        $stmt->bindParam(1, $data['id']);
-        $stmt->bindParam(2, $data['username']);
-        $stmt->bindParam(3, $data['password']);
-        $stmt->bindParam(4, $data['name']);
-        $stmt->bindParam(5, $data['lastname']);
-        $stmt->bindParam(6, $data['tipoid']);
+        $stmt->bindParam(1, $data['acta_id']);
+        $stmt->bindParam(2, $data['in_charge']);
+        $stmt->bindParam(3, $data['description']);
+        $stmt->bindParam(4, $data['start_date']);
+        $stmt->bindParam(5, $data['end_date']);
         $stmt->execute();
-        return self::toJson("Usuario registrado", $data);
+        return self::toJson("Compromiso registrado", $data);
     }
 
     public static function update($data) {
-        $table = "users";
-        $sql = "UPDATE {$table} SET username = ?, password = ?, name = ?, lastname = ?, role = ? WHERE id = ?";
+        $table = "commitment";
+        $sql = "UPDATE {$table} SET in_charge = ?, description = ?, start_date = ?, end_date = ? WHERE id = ?";
         $stmt = Conection::conect()->prepare($sql);
 
-        $stmt->bindParam(1, $data['username']);
-        $stmt->bindParam(2, $data['password']);
-        $stmt->bindParam(3, $data['name']);
-        $stmt->bindParam(4, $data['lastname']);
-        $stmt->bindParam(5, $data['role']);
-        $stmt->bindParam(6, $data['id']);
+        $stmt->bindParam(1, $data['in_charge']);
+        $stmt->bindParam(2, $data['description']);
+        $stmt->bindParam(3, $data['start_date']);
+        $stmt->bindParam(4, $data['end_date']);
+        $stmt->bindParam(5, $data['id']);
 
         $stmt->execute();
 
-        return self::toJson("Usuario actualizado", $data);
+        return self::toJson("Compromiso actualizado", $data);
     }
 
     public static function delete($id) {
-        $table = "users";
+        $table = "commitment";
         $result = self::getBy("id", $id);
         if ($result != null) {
             $sql = "DELETE FROM {$table} WHERE id = ?";
@@ -86,8 +84,8 @@ class User {
             $stmt->bindParam(1, $id);
 
             $stmt->execute();
-            return self::toJson("Usuario eliminado", $result[0]);
+            return self::toJson("Compromiso eliminado", $result[0]);
         }
-        return self::toJson("Error", "El ID de usuario ingresado no existe en la base de datos");
+        return self::toJson("Error", "El ID de compromiso ingresado no existe en la base de datos");
     }
 }
