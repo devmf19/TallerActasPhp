@@ -5,12 +5,12 @@ require_once 'conection.php';
 class Assistant {
 
     public static function toJson($name, $data) {
-        header('Content-type:application/json;charset=utf-8');
+        // header('Content-type:application/json;charset=utf-8');
         return json_encode($data, JSON_UNESCAPED_SLASHES);
     }
 
     public static function toJson2($name, $data){
-        header('Content-type:application/json;charset=utf-8');
+        // header('Content-type:application/json;charset=utf-8');
         return json_encode([
             $name => $data
         ]);
@@ -21,27 +21,19 @@ class Assistant {
         $sql = "SELECT * FROM {$table}";
         $stmt = Conection::conect()->prepare($sql);
         $stmt->execute();
-
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return self::toJson("kkk", $result);
+        return $stmt->fetchAll();
     }
 
     public static function getBy($colum, $value) {
         $table = "assistants";
-        if(is_string($value)){
-            $value = '"' . $value . '"';
-        }
         $sql = "SELECT * FROM {$table} WHERE {$colum} = {$value}";
         $stmt = Conection::conect()->prepare($sql);
-        $stmt->execute();
-
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        if ($result == false) {
-            return null;
+        
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
         }
-
-        return $result;
     }
 
     public static function save($data) {
@@ -51,8 +43,11 @@ class Assistant {
 
         $stmt->bindParam(1, $data['acta_id']);
         $stmt->bindParam(2, $data['assistant_id']);
-        $stmt->execute();
-        return self::toJson("Asistente registrado", $data);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
     }
 
     public static function update($data) {
@@ -64,23 +59,23 @@ class Assistant {
         $stmt->bindParam(2, $data['assistant_id']);
         $stmt->bindParam(3, $data['id']);
 
-        $stmt->execute();
-
-        return self::toJson("Asistente actualizado", $data);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
     }
 
     public static function delete($id) {
         $table = "assistants";
-        $result = self::getBy("id", $id);
-        if ($result != null) {
-            $sql = "DELETE FROM {$table} WHERE id = ?";
+        $sql = "DELETE FROM {$table} WHERE id = ?";
+        $stmt = Conection::conect()->prepare($sql);
+        $stmt->bindParam(1, $id);
 
-            $stmt = Conection::conect()->prepare($sql);
-            $stmt->bindParam(1, $id);
-
-            $stmt->execute();
-            return self::toJson("Asistente eliminado", $result[0]);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
         }
-        return self::toJson("Error", "El ID de asistente ingresado no existe en la base de datos");
     }
 }

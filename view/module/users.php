@@ -1,14 +1,14 @@
 <?php
 
-if($_SESSION["rol"] == "Vendedor"){
+// if($_SESSION["rol"] == "1"){
 
-  echo '<script>
-    window.location = "home";
-  </script>';
+//   echo '<script>
+//     window.location = "home";
+//   </script>';
 
-  return;
+//   return;
 
-}
+// }
 
 ?>
  <div class="content-wrapper">
@@ -40,10 +40,9 @@ if($_SESSION["rol"] == "Vendedor"){
                <th style="width:10px">#</th>
                <th>Nombre</th>
                <th>Usuario</th>
+               <th>Tipo Id</th>
+               <th># Id</th>
                <th>Rol</th>
-               <th>Estado</th>
-               <th>Foto</th>
-               <th style="width:150px">Último login</th>
                <th>Opciones</th>
              </tr>
            </thead>
@@ -55,37 +54,31 @@ if($_SESSION["rol"] == "Vendedor"){
            $column = null;
            $value = null;
 
-           $users = UsersController::ctrShowUser($column, $value);
+           $users = UserController::list();
 
            foreach($users as $key => $data) {
-
+             $tipoid = $data["tipoid"];
              echo ' <tr>
                     <td>'.($key+1).'</td>
-                    <td>'.$data["nombre"].'</td>
-                    <td>'.$data["usuario"].'</td>
-                    <td>'.$data["rol"].'</td>';
+                    <td>'.$data["name"].' '. $data["lastname"].'</td>
+                    <td>'.$data["username"].'</td>
+                    <td>'.$tipoid.'</td>
+                    <td>'.$data["id"].'</td>';
 
-                    if($data["estado"] != 0){
-                      echo '<td><button class="btn btn-success btn-xs btnActivar" idUsuario="'.$data["id"].'" estadoUsuario="0">Activado</button></td>';
+                    if($data["role"] == 1){
+                      echo '<td><button class="btn btn-success btn-xs btnActivar" idUsuario="'.$data["id"].'" estadoUsuario="1">Informes</button></td>';
                     }else{
-                      echo '<td><button class="btn btn-danger btn-xs btnActivar" idUsuario="'.$data["id"].'" estadoUsuario="1">Desactivado</button></td>';
+                      echo '<td><button class="btn btn-danger btn-xs btnActivar" idUsuario="'.$data["id"].'" estadoUsuario="2">Administrador</button></td>';
                     } 
 
-                    if($data["foto"] != ""){
-                      echo '<td><img src="'.$data["foto"].'" class="img-thumbnail" width="40px"></td>';
-                    }else{
-                      echo '<td><img src="view/img/users/default/default-user.png" class="img-thumbnail" width="40px"></td>';
-                    }
-
-                    echo '<td>'.$data["ultimo_login"].'</td>
-                    
-                    <td>
-                      <div class="btn-toolbar">
+                    echo
+                     '<td>
+                      <div class="btn-toolbar"> 
                         <div class="btn-group">
                           <button class="btn btn-warning btnEditarUsuario" idUsuario="'.$data["id"].'" data-toggle="modal" data-target="#modalUpdateUser"><i class="fa fa-pencil"></i></button>
                         </div>  
                         <div class="btn-group">
-                          <button class="btn btn-danger btnEliminarUsuario" idUsuario="'.$data["id"].'" fotoUsuario="'.$data["foto"].'" usuario="'.$data["usuario"].'"><i class="fa fa-times"></i></button>
+                          <button class="btn btn-danger btnEliminarUsuario" idUsuario="'.$data["id"].'"><i class="fa fa-times"></i></button>
                         </div> 
                       </div>
                     </td>
@@ -209,8 +202,8 @@ if($_SESSION["rol"] == "Vendedor"){
            <button type="submit" class="btn btn-success">Registrar usuario</button>
            <?php
 
-            $createUser = new UsersController();
-            $createUser->ctrCreateUser();
+            // $createUser = new UsersController();
+            // $createUser->ctrCreateUser();
 
             ?>
          </div>
@@ -332,8 +325,8 @@ if($_SESSION["rol"] == "Vendedor"){
 
          <?php
 
-          $editUser = new UsersController();
-          $editUser->ctrUpdateUser();
+          // $editUser = new UsersController();
+          // $editUser->ctrUpdateUser();
 
           ?>
 
@@ -344,7 +337,7 @@ if($_SESSION["rol"] == "Vendedor"){
 
  <?php
 
-  $deleteUser = new UsersController();
-  $deleteUser->ctrDeleteUser();
+  // $deleteUser = new UsersController();
+  // $deleteUser->ctrDeleteUser();
 
   ?>

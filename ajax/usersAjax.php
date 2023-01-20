@@ -1,7 +1,5 @@
 <?php
-
-
-
+// require_once "../controller/userController.php";
 class UsersAjax{
     
     function login($username, $password){

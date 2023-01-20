@@ -29,20 +29,11 @@ class Acta {
 
     public static function getBy($colum, $value) {
         $table = "acta";
-        if(is_string($value)){
-            $value = '"' . $value . '"';
-        }
         $sql = "SELECT * FROM {$table} WHERE {$colum} = {$value}";
         $stmt = Conection::conect()->prepare($sql);
         $stmt->execute();
 
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        if ($result == false) {
-            return null;
-        }
-
-        return $result;
+        return $stmt->fetch();
     }
 
     public static function save($data) {
@@ -50,16 +41,20 @@ class Acta {
         $sql = "INSERT INTO {$table} (creator_id, issue, created_date, start_time, end_time, in_charge, order_of_day, facts_description) VALUES (?,?,?,?,?,?,?,?)";
         $stmt = Conection::conect()->prepare($sql);
 
-        $stmt->bindParam(1, $data['creator_id']);
-        $stmt->bindParam(2, $data['issue']);
-        $stmt->bindParam(3, $data['created_date']);
-        $stmt->bindParam(4, $data['start_time']);
-        $stmt->bindParam(5, $data['end_time']);
-        $stmt->bindParam(6, $data['in_charge']);
-        $stmt->bindParam(7, $data['order_of_day']);
-        $stmt->bindParam(8, $data['facts_description']);
-        $stmt->execute();
-        return self::toJson("Acta registrada", $data);
+        $now = date("Y-m-d");
+        $stmt->bindParam(1, $data['new_creator_id']);
+        $stmt->bindParam(2, $data['new_issue']);
+        $stmt->bindParam(3, $now);
+        $stmt->bindParam(4, $data['new_start_time']);
+        $stmt->bindParam(5, $data['new_end_time']);
+        $stmt->bindParam(6, $data['new_in_charge']);
+        $stmt->bindParam(7, $data['new_order_of_day']);
+        $stmt->bindParam(8, $data['new_facts_description']);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
     }
 
     public static function update($data) {
@@ -67,31 +62,31 @@ class Acta {
         $sql = "UPDATE {$table} SET issue = ?, start_time = ?, end_time = ?, in_charge = ?, order_of_day = ?, facts_description = ? WHERE id = ?";
         $stmt = Conection::conect()->prepare($sql);
 
-        $stmt->bindParam(1, $data['issue']);
-        $stmt->bindParam(2, $data['start_time']);
-        $stmt->bindParam(3, $data['end_time']);
-        $stmt->bindParam(4, $data['in_charge']);
-        $stmt->bindParam(5, $data['order_of_day']);
-        $stmt->bindParam(6, $data['facts_description']);
-        $stmt->bindParam(7, $data['id']);
+        $stmt->bindParam(1, $data['up_issue']);
+        $stmt->bindParam(2, $data['up_start_time']);
+        $stmt->bindParam(3, $data['up_end_time']);
+        $stmt->bindParam(4, $data['up_in_charge']);
+        $stmt->bindParam(5, $data['up_order_of_day']);
+        $stmt->bindParam(6, $data['up_facts_description']);
+        $stmt->bindParam(7, $data['id_acta']);
 
-        $stmt->execute();
-
-        return self::toJson("Acta actualizada", $data);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
     }
 
     public static function delete($id) {
         $table = "acta";
-        $result = self::getBy("id", $id);
-        if ($result != null) {
-            $sql = "DELETE FROM {$table} WHERE id = ?";
+        $sql = "DELETE FROM {$table} WHERE id = ?";
+        $stmt = Conection::conect()->prepare($sql);
+        $stmt->bindParam(1, $id);
 
-            $stmt = Conection::conect()->prepare($sql);
-            $stmt->bindParam(1, $id);
-
-            $stmt->execute();
-            return self::toJson("Acta eliminada", $result[0]);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
         }
-        return self::toJson("Error", "El ID de acta ingresado no existe en la base de datos");
     }
 }

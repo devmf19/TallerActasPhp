@@ -3,7 +3,7 @@
 <section class="content-header">
 
   <h1>
-    Actas
+    Compromisos
   </h1>
 
 </section>
@@ -14,8 +14,8 @@
  <div class="box">
 
    <div class="box-header with-border">
-     <button class="btn btn-primary" data-toggle="modal" data-target="#modalNewActa">
-       Nueva acta
+     <button class="btn btn-primary" data-toggle="modal" data-target="#modalNewCommitment">
+       Nuevo compromiso
      </button>
    </div>
 
@@ -26,12 +26,11 @@
        <thead>
          <tr>
            <th style="width:10px">#</th>
-           <th>Creador</th>
-           <th>Asunto</th>
+           <th>Descripción</th>
+           <th>Asunto acta</th>
+           <th>Responsable</th>
            <th>Inicia</th>
            <th>Termina</th>
-           <th>Creada</th>
-           <th>Responsable</th>
            <th>Opciones</th>
          </tr>
        </thead>
@@ -43,20 +42,19 @@
        $column = null;
        $value = null;
 
-       $actas = ActaController::list();
+       $commitments = CommitmentController::list();
 
-       foreach($actas as $key => $data) {
-         $creator = UserController::getOne($data["creator_id"]);
+       foreach($commitments as $key => $data) {
+         $acta = ActaController::getOne($data["acta_id"]);
          $inCharge = UserController::getOne($data["in_charge"]);
 
          echo '<tr>
                <td>'.($key+1).'</td>
-               <td>'.$creator["name"].' .'.$creator["lastname"].'</td>
-               <td>'.$data["issue"].'</td>
-               <td>'.$data["start_time"].'</td>
-               <td>'.$data["end_time"].'</td>
-               <td>'.$data["created_date"].'</td>
+               <td>'.$data["description"].'</td>
+               <td>'.$acta["issue"].'</td>
                <td>'.$inCharge["name"].' .'.$inCharge["lastname"].'</td>
+               <td>'.$data["start_date"].'</td>
+               <td>'.$data["end_date"].'</td>
                
                <td>
                  <div class="btn-toolbar">
@@ -68,10 +66,10 @@
 
                      echo '
                      <div class="btn-group">
-                        <button class="btn btn-warning btnEditActa" id="'.$data["id"].'" data-toggle="modal" data-target="#modalUpdateActa"><i class="fa fa-pencil"></i></button>
+                        <button class="btn btn-warning btnEditCommitment" id="'.$data["id"].'" data-toggle="modal" data-target="#modalUpdateCommitment"><i class="fa fa-pencil"></i></button>
                      </div>
                      <div class="btn-group">
-                        <button class="btn btn-danger btnDeleteActa" id="'.$data["id"].'"><i class="fa fa-times"></i></button>
+                        <button class="btn btn-danger btnDeleteCommitment" id="'.$data["id"].'"><i class="fa fa-times"></i></button>
                      </div> 
                      ';
    
@@ -97,11 +95,11 @@
 
 <!-- ----------------------------------------------------------- -->
 <!-- ----------------------------------------------------------- -->
-<!-- ------------------ crear acta -------------------- -->
+<!-- ------------------ crear compromiso -------------------- -->
 <!-- ----------------------------------------------------------- -->
 <!-- ----------------------------------------------------------- -->
 
-<div id="modalNewActa" class="modal fade" role="dialog">
+<div id="modalNewCommitment" class="modal fade" role="dialog">
 <div class="modal-dialog">
   <div class="modal-content">
 
@@ -109,20 +107,38 @@
        
     <!--modal header-->
        <div class="modal-header" style="background:#3c8dbc; color:white">
-         <h4 class="modal-title">Nueva acta</h4>
+         <h4 class="modal-title">Nuevo compromiso</h4>
        </div>
 
        <!--modal body-->
        <div class="modal-body">
          <div class="box-body">
 
-            <!-- seleccionar creador -->
+         <!-- seleccionar acta -->
+          <div class="form-group">
+              <div class="input-group">
+                
+              <span class="input-group-addon"><i class="fa fa-th"></i></span> 
+              <select class="form-control input-lg" id="new_acta_id_c" name="new_acta_id_c" required>
+                <option value="">Acta</option>
+                <?php
+                  $actas = ActaController::list();
+                  foreach ($actas as $key => $value) {
+                    echo '<option value="'.$value["id"].'">'.$value["issue"].'</option>';
+                  }
+                ?>
+              </select>
+
+              </div>
+            </div>
+
+            <!-- seleccionar responsable -->
             <div class="form-group">
               <div class="input-group">
                 
               <span class="input-group-addon"><i class="fa fa-th"></i></span> 
-              <select class="form-control input-lg" id="new_creator_id" name="new_creator_id" required>
-                <option value="">Creador del acta</option>
+              <select class="form-control input-lg" id="new_in_charge_c" name="new_in_charge_c" required>
+                <option value="">Responsable</option>
                 <?php
                   $users = UserController::list();
                   foreach ($users as $key => $value) {
@@ -134,12 +150,12 @@
               </div>
             </div>
 
-           <!-- asunto -->
+           <!-- descripcion -->
            <div class="form-group">
              <div class="input-group">
 
                <span class="input-group-addon"><i class="fa fa-id-card"></i></span>
-               <input type="text" class="form-control input-lg" id="new_issue" name="new_issue"  placeholder="Asunto del acta" required>
+               <input type="text" class="form-control input-lg" id="new_description_c" name="new_description_c"  placeholder="Descripción del compromiso" required>
 
              </div>
            </div>
@@ -151,58 +167,20 @@
                 <div class="input-group">
 
                   <span class="input-group-addon">Inicia</span>
-                  <input type="time" class="form-control input-lg" id="new_start_time" name="new_start_time" min="09:00" max="18:00" required>
+                  <input type="date" class="form-control input-lg" id="new_start_date_c" name="new_start_date_c" min="09:00" max="18:00" required>
 
                 </div>
               </div>
               <div class="col-xs-6">
                 <div class="input-group">
 
-                  <input type="time" class="form-control input-lg" id="new_end_time" name="new_end_time" min="09:00" max="18:00" required>
+                  <input type="date" class="form-control input-lg" id="new_end_date_c" name="new_end_date_c" min="09:00" max="18:00" required>
                   <span class="input-group-addon">Termina</span>
 
                 </div>
               </div>
 
 
-           </div>
-
-           <!-- seleccionar responsable -->
-           <div class="form-group">
-              <div class="input-group">
-                
-              <span class="input-group-addon"><i class="fa fa-th"></i></span> 
-              <select class="form-control input-lg" id="new_in_charge"  name="new_in_charge" required>
-                <option value="">Responsable del acta</option>
-                <?php
-                  $users = UserController::list();
-                  foreach ($users as $key => $value) {
-                    echo '<option value="'.$value["id"].'">'.$value["name"].' '. $value["lastname"].'</option>';
-                  }
-                ?>
-              </select>
-
-              </div>
-            </div>
-
-           <!-- orden del dia -->
-           <div class="form-group">
-             <div class="input-group">
-
-               <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-               <input type="text" class="form-control input-lg" id="new_order_of_day" name="new_order_of_day" placeholder="Orden del día" required>
-
-             </div>
-           </div>
-
-           <!-- descripcion de hechos -->
-           <div class="form-group">
-             <div class="input-group">
-
-               <span class="input-group-addon"><i class="fa fa-key"></i></span>
-               <input type="text" class="form-control input-lg" id="new_facts_description" name="new_facts_description" placeholder="Descripción de hechos" required>
-
-             </div>
            </div>
 
          
@@ -213,11 +191,11 @@
        <div class="modal-footer">
 
          <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
-         <button type="submit" id="btn_new_acta" class="btn btn-success">Registrar acta</button>
+         <button type="submit" id="btn_new_acta" class="btn btn-success">Registrar compromiso</button>
          <?php
 
-            $crateActa = new ActaController();
-            $crateActa->save();
+            $crateCommitment = new CommitmentController();
+            $crateCommitment->save();
 
            ?>
 
@@ -231,7 +209,7 @@
 
 <!-- ----------------------------------------------------------- -->
 <!-- ----------------------------------------------------------- -->
-<!-- --------------- actualizar acta ------------------ -->
+<!-- --------------- actualizar compromiso ------------------ -->
 <!-- ----------------------------------------------------------- -->
 <!-- ----------------------------------------------------------- -->
 
@@ -244,7 +222,7 @@
       <!--modal header-->
       <div class="modal-header" style="background:#3c8dbc; color:white">
 
-        <h4 class="modal-title">Actualizar acta</h4>
+        <h4 class="modal-title">Actualizar compromiso</h4>
 
       </div>
 
@@ -351,8 +329,8 @@
         <button type="submit" class="btn btn-success">Actualizar acta</button>
         <?php
 
-          $updateActa = new ActaController();
-          $updateActa->update();
+        //   $updateActa = new ActaController();
+        //   $updateActa->update();
 
          ?>
       </div>
@@ -366,7 +344,7 @@
 
 <?php
 
-$deleteActa = new ActaController();
-$deleteActa->delete();
+// $deleteActa = new ActaController();
+// $deleteActa->delete();
 
 ?>

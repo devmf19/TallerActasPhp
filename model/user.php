@@ -23,7 +23,8 @@ class User {
         $stmt->execute();
 
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return self::toJson("kkk", $result);
+        return $result;
+        // return self::toJson("kkk", $result);
     }
 
     public static function getBy($colum, $value) {
@@ -35,28 +36,42 @@ class User {
         $stmt = Conection::conect()->prepare($sql);
         $stmt->execute();
 
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        if ($result == false) {
-            return null;
-        }
-
-        return $result;
+        return $stmt->fetch();
     }
 
     public static function save($data) {
         $table = "users";
-        $sql = "INSERT INTO {$table} (id, username, password, name, lastname, tipoid) VALUES (?,?,?,?,?,?)";
+        $sql = "INSERT INTO {$table} (id, username, password, name, lastname, tipoid, email) VALUES (?,?,?,?,?,?,?)";
         $stmt = Conection::conect()->prepare($sql);
 
-        $stmt->bindParam(1, $data['id']);
-        $stmt->bindParam(2, $data['username']);
-        $stmt->bindParam(3, $data['password']);
-        $stmt->bindParam(4, $data['name']);
-        $stmt->bindParam(5, $data['lastname']);
-        $stmt->bindParam(6, $data['tipoid']);
-        $stmt->execute();
-        return self::toJson("Usuario registrado", $data);
+        $stmt->bindParam(1, $data['new_id']);
+        $stmt->bindParam(2, $data['new_username']);
+        $stmt->bindParam(3, $data['new_password']);
+        $stmt->bindParam(4, $data['new_name']);
+        $stmt->bindParam(5, $data['new_lastname']);
+        $stmt->bindParam(6, $data['new_tipoid']);
+        $stmt->bindParam(7, $data['new_email']);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        // $stmt->execute();
+        // return self::toJson("Usuario registrado", $data);
+    }
+
+    public static function updateValue($column1, $value1, $column2, $value2) {
+        $table = "users";
+        $stmt = Conection::conect()->prepare("UPDATE $table SET $column1 = ? WHERE $column2 = ?");
+
+        $stmt->bindParam(1, $value1, PDO::PARAM_STR);
+        $stmt->bindParam(2, $value2, PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
     }
 
     public static function update($data) {

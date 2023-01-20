@@ -99,7 +99,6 @@
     <div class="wrapper">
         
         <?php
-        $ses = $_SESSION;
         if (
             isset($_SESSION['login']) &&
             $_SESSION['login'] == 1
@@ -121,14 +120,8 @@
                     $route == "commitments" ||
                     $route == "assistants" ||
                     $route == "users" ||
-                    $route == "categories" ||
-                    $route == "providers" ||
-                    $route == "customers" ||
-                    $route == "brands" ||
-                    $route == "users" ||
-                    $route == "new-entry" ||
-                    $route == "seeSale" ||
-                    $route == "seeEntry" ||
+                    $route == "signup" ||
+                    $route == "login" ||
                     $route == "logout"
                 ) {
                     include "module/" . $route . ".php";
@@ -144,22 +137,29 @@
 
             echo ('</div>');
         } else {
-            include 'module/login.php';
+            if (isset($_GET["route"])){
+                $route  = $_GET["route"];
+                if (
+                    $route == "recover" ||
+                    $route == "signup" ||
+                    $route == "login"
+                ) {
+                    include "module/" . $route . ".php";
+                } else {
+                    include 'module/login.php';
+                }
+            } else {
+                include 'module/login.php';
+            }
+
         }
         ?>
 
     </div>
 
-    <!-- <script src="view/js/template.js"></script>
-    <script src="view/js/users.js"></script>
-    <script src="view/js/brands.js"></script>
-    <script src="view/js/categories.js"></script>
-    <script src="view/js/customers.js"></script>
-    <script src="view/js/providers.js"></script>
-    <script src="view/js/products.js"></script>
-    <script src="view/js/entrys.js"></script>
-    <script src="view/js/sales.js"></script>
-    <script src="view/js/reports.js"></script> -->
+    <script src="view/js/template.js"></script>
+    <script src="view/js/actas.js"></script>
+    <script src="view/js/assistants.js"></script>
 
 </body>
 

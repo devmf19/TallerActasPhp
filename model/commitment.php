@@ -22,8 +22,9 @@ class Commitment {
         $stmt = Conection::conect()->prepare($sql);
         $stmt->execute();
 
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return self::toJson("kkk", $result);
+        $result = $stmt->fetchAll();
+        // return $this->toJson("kkk", $result);
+        return $result;
     }
 
     public static function getBy($colum, $value) {
@@ -35,13 +36,7 @@ class Commitment {
         $stmt = Conection::conect()->prepare($sql);
         $stmt->execute();
 
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        if ($result == false) {
-            return null;
-        }
-
-        return $result;
+        return $stmt->fetch();
     }
 
     public static function save($data) {
@@ -49,13 +44,16 @@ class Commitment {
         $sql = "INSERT INTO {$table} (acta_id, in_charge, description, start_date, end_date) VALUES (?,?,?,?,?)";
         $stmt = Conection::conect()->prepare($sql);
 
-        $stmt->bindParam(1, $data['acta_id']);
-        $stmt->bindParam(2, $data['in_charge']);
-        $stmt->bindParam(3, $data['description']);
-        $stmt->bindParam(4, $data['start_date']);
-        $stmt->bindParam(5, $data['end_date']);
-        $stmt->execute();
-        return self::toJson("Compromiso registrado", $data);
+        $stmt->bindParam(1, $data['new_acta_id_c']);
+        $stmt->bindParam(2, $data['new_in_charge_c']);
+        $stmt->bindParam(3, $data['new_description_c']);
+        $stmt->bindParam(4, $data['new_start_date_c']);
+        $stmt->bindParam(5, $data['new_end_date_c']);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
     }
 
     public static function update($data) {
@@ -63,29 +61,29 @@ class Commitment {
         $sql = "UPDATE {$table} SET in_charge = ?, description = ?, start_date = ?, end_date = ? WHERE id = ?";
         $stmt = Conection::conect()->prepare($sql);
 
-        $stmt->bindParam(1, $data['in_charge']);
-        $stmt->bindParam(2, $data['description']);
-        $stmt->bindParam(3, $data['start_date']);
-        $stmt->bindParam(4, $data['end_date']);
-        $stmt->bindParam(5, $data['id']);
+        $stmt->bindParam(1, $data['up_in_charge_c']);
+        $stmt->bindParam(2, $data['up_description_c']);
+        $stmt->bindParam(3, $data['up_start_date_c']);
+        $stmt->bindParam(4, $data['up_end_date_c']);
+        $stmt->bindParam(5, $data['up_id_c']);
 
-        $stmt->execute();
-
-        return self::toJson("Compromiso actualizado", $data);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
     }
 
     public static function delete($id) {
         $table = "commitment";
-        $result = self::getBy("id", $id);
-        if ($result != null) {
-            $sql = "DELETE FROM {$table} WHERE id = ?";
+        $sql = "DELETE FROM {$table} WHERE id = ?";
+        $stmt = Conection::conect()->prepare($sql);
+        $stmt->bindParam(1, $id);
 
-            $stmt = Conection::conect()->prepare($sql);
-            $stmt->bindParam(1, $id);
-
-            $stmt->execute();
-            return self::toJson("Compromiso eliminado", $result[0]);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
         }
-        return self::toJson("Error", "El ID de compromiso ingresado no existe en la base de datos");
     }
 }
