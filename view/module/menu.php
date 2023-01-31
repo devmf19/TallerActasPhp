@@ -12,6 +12,13 @@
             </li>
 
             <li>
+                <a href="reports">
+                    <i class="fa fa-home"></i>
+                    <span>Informes</span>
+                </a>
+            </li>
+
+            <li>
                 <a href="actas">
                     <i class="fa fa-th"></i>
                     <span>Actas</span>

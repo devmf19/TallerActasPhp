@@ -66,6 +66,20 @@ class Assistant {
         }
     }
 
+    public static function updateValue($column1, $value1, $column2, $value2) {
+        $table = "users";
+        $stmt = Conection::conect()->prepare("UPDATE $table SET $column1 = ? WHERE $column2 = ?");
+
+        $stmt->bindParam(1, $value1, PDO::PARAM_STR);
+        $stmt->bindParam(2, $value2, PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+    }
+
     public static function delete($id) {
         $table = "assistants";
         $sql = "DELETE FROM {$table} WHERE id = ?";

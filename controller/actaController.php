@@ -21,12 +21,25 @@ class ActaController {
         return Acta::getBy($column, $issue);
     }
 
+    public static function getByCreator($creatorId){
+        $column = "creator_id";
+        return Acta::getBy($column, $creatorId);
+    }
+
+    public static function getBetween($initialDate, $endDate){
+        return Acta::getBetween($initialDate, $endDate);
+    }
+
+    public static function getPending(){
+        return Acta::getPending();
+    }
+
     public static function save(){
         $data = $_POST;
         if(!empty($data) && $data["new_issue"]!=null){
-            $exist = self::getByIssue($data["new_issue"]);
+            //$exist = self::getByIssue($data["new_issue"]);
 
-            if($exist != null){
+           /* if($exist != null){
                 echo '<script>
                     swal({
                         type: "danger",
@@ -39,7 +52,7 @@ class ActaController {
                         }
                     });
                 </script>';
-            } else {
+            } else {*/
                 $rta =  Acta::save($data);
                 if ($rta == "ok") {
                     echo '<script>
@@ -55,7 +68,7 @@ class ActaController {
                         });
                     </script>';
                 }
-            }
+           // }
             
         }
         

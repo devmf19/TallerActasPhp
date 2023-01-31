@@ -1,5 +1,4 @@
 <?php
-
 ?>
 
 <!DOCTYPE html>
@@ -41,6 +40,9 @@
     <link rel="stylesheet" href="view/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" href="view/bower_components/datatables.net-bs/css/responsive.bootstrap.min.css">
 
+    <!-- Select2 -->
+    <link rel="stylesheet" href="view/bower_components/select2/dist/css/select2.min.css">
+
        <!-- Daterange picker -->
     <link rel="stylesheet" href="view/bower_components/bootstrap-daterangepicker/daterangepicker.css">
 
@@ -68,6 +70,9 @@
     <script src="view/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
     <script src="view/bower_components/datatables.net-bs/js/dataTables.responsive.min.js"></script>
     <script src="view/bower_components/datatables.net-bs/js/responsive.bootstrap.min.js"></script>
+
+    <!-- Select2 -->
+    <script src="view/bower_components/select2/dist/js/select2.full.min.js"></script>
 
     <!-- SweetAlert 2 -->
     <script src="view/plugins/sweetalert2/sweetalert2.all.js"></script>
@@ -116,6 +121,7 @@
                 $route  = $_GET["route"];
                 if (
                     $route == "home" ||
+                    $route == "reports" ||
                     $route == "actas" ||
                     $route == "commitments" ||
                     $route == "assistants" ||
@@ -141,6 +147,7 @@
                 $route  = $_GET["route"];
                 if (
                     $route == "recover" ||
+                    $route == "newpass" ||
                     $route == "signup" ||
                     $route == "login"
                 ) {
@@ -158,9 +165,20 @@
     </div>
 
     <script src="view/js/template.js"></script>
+    <script src="view/js/login.js"></script>
+    <script src="view/js/reports.js"></script>
+    <script src="view/js/users.js"></script>
     <script src="view/js/actas.js"></script>
     <script src="view/js/assistants.js"></script>
 
 </body>
 
 </html>
+
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+  });
+</script>

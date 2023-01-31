@@ -15,7 +15,7 @@ require_once "model/email.php";
 
 require_once "ajax/usersAjax.php";
 
-require_once "view/module/reset.php";
+// require_once "view/module/reset.php";
 
 
 

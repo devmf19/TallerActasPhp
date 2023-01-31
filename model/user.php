@@ -24,7 +24,6 @@ class User {
 
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
-        // return self::toJson("kkk", $result);
     }
 
     public static function getBy($colum, $value) {
@@ -56,22 +55,6 @@ class User {
         } else {
             return "error";
         }
-        // $stmt->execute();
-        // return self::toJson("Usuario registrado", $data);
-    }
-
-    public static function updateValue($column1, $value1, $column2, $value2) {
-        $table = "users";
-        $stmt = Conection::conect()->prepare("UPDATE $table SET $column1 = ? WHERE $column2 = ?");
-
-        $stmt->bindParam(1, $value1, PDO::PARAM_STR);
-        $stmt->bindParam(2, $value2, PDO::PARAM_STR);
-
-        if ($stmt->execute()) {
-            return "ok";
-        } else {
-            return "error";
-        }
     }
 
     public static function update($data) {
@@ -86,9 +69,25 @@ class User {
         $stmt->bindParam(5, $data['role']);
         $stmt->bindParam(6, $data['id']);
 
-        $stmt->execute();
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+    }
 
-        return self::toJson("Usuario actualizado", $data);
+    public static function updateValue($column1, $value1, $column2, $value2) {
+        $table = "users";
+        $stmt = Conection::conect()->prepare("UPDATE {$table} SET {$column1} = ? WHERE {$column2} = ?");
+
+        $stmt->bindParam(1, $value1);
+        $stmt->bindParam(2, $value2);
+
+        if ($stmt->execute()) {
+            return self::getBy("id", $value2);
+        } else {
+            return "error";
+        }
     }
 
     public static function delete($id) {

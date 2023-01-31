@@ -14,18 +14,18 @@ require 'PHPMailer/src/SMTP.php';
 class Email {
     public static function send($toSend, $issue, $body){
         try {   
-            $mail = new PHPMailer(true);                                  //Send using SMTP
+            $mail = new PHPMailer(true); 
             $mail->isSMTP();
             $mail->SMTPAuth   = true;
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
             $mail->Host       = 'smtp.gmail.com'; 
             $mail->Port       = 587; 
-            $mail->Username   = 'actasunicortaller@gmail.com';                     //SMTP username
+            $mail->Username   = 'actasunicortaller@gmail.com';
             $mail->Password   = 'teldgmvqortfuhjd';
-            
+
             $mail->setFrom('actasunicortaller@gmail.com', 'Actas Unicor');
             $mail->addAddress($toSend); 
-            $mail->isHTML(true);                                  //Set email format to HTML
+            $mail->isHTML(true);
             $mail->Subject = $issue;
             $mail->Body = $body;
             $mail->CharSet = 'UTF-8';

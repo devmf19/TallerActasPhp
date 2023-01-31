@@ -10,7 +10,7 @@
                 <div class="input-group">
                     
                 <span class="input-group-addon"><i class="fa fa-th"></i></span> 
-                <select class="form-control input-lg" id="new_tipoid" name="new_tipoid" readonly required>
+                <select class="form-control input-lg" id="new_tipoid" name="new_tipoid" required>
                     <option value="">Tipo de identificación</option>
                     <option value="1">Cédula de ciudadanía</option>
                     <option value="2">Tarjeta de identidad</option>
@@ -24,6 +24,7 @@
 
                 <span class="input-group-addon"><i class="fa fa-id-card"></i></span>
                 <input type="number" class="form-control input-lg" id="new_id" name="new_id"  placeholder="Número de identificación" required>
+                <input type="hidden" name="option" id="option" value="signup" required>
 
                 </div>
             </div>
@@ -74,17 +75,15 @@
            </div>
 
             <div class="row">
-                <div class="col-xs-8">
-                    <a href="login"><button type="button" class="btn btn-primary btn-block btn-flat" id="btnLogin">Tengo cuenta</button></a>
-                </div>
-                <div class="col-xs-4">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">Registrarse</button>
+                <div class="col-xs-12">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Registrarme</button>
                 </div>
                 <?php
-                    $signup = new UserController();
-                    $signup->save();
+                    $signup = new UsersAjax();
                 ?>
             </div>
+            <br>
+            <a href="login">Ya tengo una cuenta</a>
         </form>
         </div>
 

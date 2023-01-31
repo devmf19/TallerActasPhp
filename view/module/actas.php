@@ -144,6 +144,16 @@
              </div>
            </div>
 
+           <!-- fecha -->
+           <div class="form-group">
+             <div class="input-group">
+
+                <span class="input-group-addon">Fecha</span>
+                <input type="date" class="form-control input-lg" id="up_start_time" name="new_start_date" required>
+
+             </div>
+           </div>
+
            <!-- horas de inicio y fin -->
            <div class="form-group row">
               
@@ -151,14 +161,14 @@
                 <div class="input-group">
 
                   <span class="input-group-addon">Inicia</span>
-                  <input type="time" class="form-control input-lg" id="new_start_time" name="new_start_time" min="09:00" max="18:00" required>
+                  <input type="time" class="form-control input-lg" id="new_start_time" name="new_start_time" min="09:00" max="22:00" required>
 
                 </div>
               </div>
               <div class="col-xs-6">
                 <div class="input-group">
 
-                  <input type="time" class="form-control input-lg" id="new_end_time" name="new_end_time" min="09:00" max="18:00" required>
+                  <input type="time" class="form-control input-lg" id="new_end_time" name="new_end_time" min="09:00" max="22:00" required>
                   <span class="input-group-addon">Termina</span>
 
                 </div>
@@ -277,6 +287,16 @@
                <span class="input-group-addon"><i class="fa fa-id-card"></i></span>
                <input type="text" class="form-control input-lg" id="up_issue" name="up_issue"  placeholder="Asunto del acta" required>
                <input type="hidden" name="id_acta" id="id_acta" required>
+             </div>
+           </div>
+
+           <!-- fecha -->
+           <div class="form-group">
+             <div class="input-group">
+
+                <span class="input-group-addon">Fecha</span>
+                <input type="date" class="form-control input-lg" id="up_start_time" name="up_start_date" required>
+
              </div>
            </div>
 
