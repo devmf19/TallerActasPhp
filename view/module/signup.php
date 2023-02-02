@@ -76,10 +76,10 @@
 
             <div class="row">
                 <div class="col-xs-12">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">Registrarme</button>
+                    <button type="button" class="btn btn-primary btn-block btn-flat" onclick="createUser()">Registrarme</button>
                 </div>
                 <?php
-                    $signup = new UsersAjax();
+                    //$signup = new UsersAjax();
                 ?>
             </div>
             <br>

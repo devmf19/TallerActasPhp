@@ -1,32 +1,28 @@
 
-function mostrar() {
-    const data = new FormData();
-    const option = "getPending";
+function showTableReport(response) {
+    if (response.num == '') {
+        swal({
+            type: "error",
+            title: "Sin resultados",
+            showConfirmButton: true,
+            confirmButtonText: "Cerrar"
+        })
+    }
+    $("#reportsTable").dataTable().fnDestroy();
+    $('#reportsTable').DataTable({
+        data: response,
+        columns: [
+            { data: "num" },
+            { data: "creator_id" },
+            { data: "issue" },
+            { data: "created_date" },
+            { data: "start_time" },
+            { data: "end_time" },
+            { data: "in_charge" },
+            { data: "btn" }
+        ]
+    });
 
-    data.append("option", option);
-
-    //$(document).ready(function() {
-        $('#reportsTable').DataTable( {
-          "ajax":{
-              "url": "ajax/actasAjax.php",
-              "method": "POST",
-              "data": {'opcion': data},
-              "dataSrc":""
-          },
-          "columns":[
-              {"data": "issue"},
-              {"data": "issue"},
-              {"data": "creator_id"},
-              {"data": "created_date"},
-              {"data": "start_time"},
-              {"data": "end_time"},
-              {"data": "in_charge"},
-              {"data": "issue"}
-          ]  
-        });
-    //});
-
-    
 }
 
 $('#report-type').on('change', function () {
@@ -39,7 +35,7 @@ $('#report-type').on('change', function () {
         // mostrar();
         getPending();
     } else if (option == 3) {
-        getUsers();
+        getUsersReport();
     } else if (option == 4) {
         idActas();
     } else if (option == 5) {
@@ -69,6 +65,7 @@ function getBetween() {
         success: function (response) {
 
             console.log(response);
+            showTableReport(response);
 
         }
 
@@ -90,22 +87,9 @@ function getPending() {
         processData: false,
         dataType: "json",
         success: function (response) {
-            //response = JSON.parse(response);
             console.log(response);
-            $("#reportsTable").dataTable().fnDestroy();
-            $('#reportsTable').DataTable( {
-                data: response,
-                columns:[
-                    {data: "num"},
-                    {data: "issue"},
-                    {data: "creator_id"},
-                    {data: "created_date"},
-                    {data: "start_time"},
-                    {data: "end_time"},
-                    {data: "in_charge"},
-                    {data: "btn"}
-                ]  
-              });
+            showTableReport(response);
+
         }
 
     });
@@ -130,6 +114,7 @@ function getByActa() {
         success: function (response) {
 
             console.log(response);
+            showTableReport(response);
 
         }
 
@@ -155,6 +140,7 @@ function getByIssue() {
         success: function (response) {
 
             console.log(response);
+            showTableReport(response);
 
         }
 
@@ -179,13 +165,14 @@ function getByCreator() {
         success: function (response) {
 
             console.log(response);
+            showTableReport(response);
 
         }
 
     });
 }
 
-function getUsers() {
+function getUsersReport() {
     const data = new FormData();
     const option = "getUsers";
 
@@ -231,7 +218,7 @@ function dates() {
 
         '<div class="col-xs-2">' +
         '<div class="input-group">' +
-        '<button class="btn btn-primary btn-lg" id="date-report" onclick="getBetween()">Buscar</button>' +
+        '<button class="btn btn-primary btn-lg" id="btn-report1" onclick="getBetween()">Buscar</button>' +
         '</div>' +
         '</div>' +
 
@@ -244,15 +231,11 @@ function idActas() {
         '<div class="form-group row">' +
 
         '<div class="col-xs-10">' +
-        '<div class="input-group">' +
         '<input type="number" class="form-control input-lg" id="id-acta" name="id-acta" placeholder="Código" required>' +
-        '</div>' +
         '</div>' +
 
         '<div class="col-xs-2">' +
-        '<div class="input-group">' +
-        '<button class="btn btn-primary btn-lg" id="acta-report1" onclick="getByActa()">Buscar</button>' +
-        '</div>' +
+        '<button class="btn btn-primary btn-lg" id="btn-report2" onclick="getByActa()">Buscar</button>' +
         '</div>' +
 
         '</div>'
@@ -264,15 +247,11 @@ function issueActas() {
         '<div class="form-group row">' +
 
         '<div class="col-xs-10">' +
-        '<div class="input-group">' +
         '<input type="text" class="form-control input-lg" id="issue-acta" name="issue-acta" placeholder="Asunto" required>' +
-        '</div>' +
         '</div>' +
 
         '<div class="col-xs-2">' +
-        '<div class="input-group">' +
-        '<button class="btn btn-primary btn-lg" id="acta-report1" onclick="getByIssue()">Buscar</button>' +
-        '</div>' +
+        '<button class="btn btn-primary btn-lg" id="btn-report3" onclick="getByIssue()">Buscar</button>' +
         '</div>' +
 
         '</div>'
@@ -281,25 +260,21 @@ function issueActas() {
 }
 function users(json) {
     document.getElementById('report-field').innerHTML = '' +
-        '<div class="form-group">' +
-        '<div class="col-xs-10">' +
-        '<div class="input-group">' +
+        '<div class="form-group row">' +
+            '<div class="col-xs-10">' +
 
-        '<select class="form-control input-lg" id="users-report" name="users-report" required>' +
-        '<option value="">Creador del acta</option>';
-    $.each(json, function (id, name) {
-        $('#users-report').append('<option value=' + name.id + '>' + name.name + '</option>');
-    });
-    $("#report-field").append('</select>' +
+                '<select class="form-control input-lg" id="users-report" name="users-report" required>' +
+                    '<option value="">Creador del acta</option>';
+                    $.each(json, function (id, name) {
+                        $('#users-report').append('<option value=' + name.id + '>' + name.name + '</option>');
+                    });
+                $("#report-field").append('</select>' +
 
-        '</div>' +
-        '</div>' +
+            // '</div>' +
 
-        '<div class="col-xs-2">' +
-        '<div class="input-group">' +
-        '<button class="btn btn-primary btn-lg" id="acta-report1" onclick="getByCreator()">Buscar</button>' +
-        '</div>' +
-        '</div>' +
+            '<div class="col-xs-2">' +
+                '<button class="btn btn-primary btn-lg" id="btn-report4" onclick="getByCreator()">Buscar</button>' +
+            '</div>' +
 
         '</div >')
         ;

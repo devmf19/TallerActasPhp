@@ -1,17 +1,5 @@
-<div class="content-wrapper">
 
-<section class="content-header">
-
-  <h1>
-    Compromisos
-  </h1>
-
-</section>
-
-<!-- Contenido principal -->
-<section class="content">
-
- <div class="box">
+ <div class="box box-solid">
 
    <div class="box-header with-border">
      <button class="btn btn-primary" data-toggle="modal" data-target="#modalNewCommitment">
@@ -89,9 +77,8 @@
   
  </div>
 
-</section>
 
-</div>
+
 
 <!-- ----------------------------------------------------------- -->
 <!-- ----------------------------------------------------------- -->

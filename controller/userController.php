@@ -19,17 +19,42 @@ class UserController
         return json_encode($data, JSON_UNESCAPED_SLASHES);
     }
 
-    public static function alert($type, $tittle) {
+    public static function alert($type, $tittle)
+    {
         echo '<br><br>
-            <div class="alert alert-'.$type.'" role="alert">
+            <div class="alert alert-' . $type . '" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria label="Close"><span aria-hidden="true">&times;</span></button>
-                '.$tittle.'
+                ' . $tittle . '
             </div>';
     }
 
+    public static function validate2($data)
+    {
+        if ($data["up_tipoid"] == 1 || $data["up_tipoid"] == 2) {
+            if (is_numeric($data["up_id"])) {
+                if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $data["up_name"])) {
+                    if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $data["up_lastname"])) {
+                        if (preg_match('/^[a-zA-Z0-9]+$/', $data["up_username"])) {
+                            return "ok";
+                        } else {
+                            return "La usuario ingresado contiene carácteres inválidos.";
+                        }
+                    } else {
+                        return "El apellido ingresado contiene carácteres inválidos.";
+                    }
+                } else {
+                    return "El nombre ingresado contiene carácteres inválidos.";
+                }
+            } else {
+                return "Solo puede ingresar números en el id.";
+            }
+        } else {
+            return "Tipo de id inválido.";
+        }
+    }
     public static function validate($data)
     {
-        if($data["new_tipoid"] == 1 || $data["new_tipoid"] == 2){
+        if ($data["new_tipoid"] == 1 || $data["new_tipoid"] == 2) {
             if (is_numeric($data["new_id"])) {
                 if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $data["new_name"])) {
                     if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $data["new_lastname"])) {
@@ -54,15 +79,11 @@ class UserController
         } else {
             return "Tipo de id inválido.";
         }
-        
     }
 
     public static function login($username, $password)
     {
-        // $response = [
-        //     'code' => 'none',
-        //     'msg' => 'none'
-        // ];
+
         if ($username != "" && $password != "") {
             if (preg_match('/^[a-zA-Z0-9]+$/', $username)) {
                 // eccriptación de contraseña
@@ -84,16 +105,12 @@ class UserController
                         $_SESSION["username"] = $rta["username"];
                         $_SESSION["role"] = $rta["role"];
 
-                        // $response['code'] = 'success';
-                        // $response['msg'] = 'Ok';
 
                         echo '<script>
                                  window.location = "home";
                             </script>';
                     }
                 } else {
-                    // $response['code'] = 'error';
-                    // $response['msg'] = 'Usuario no registrado';
                     self::alert("danger", "Usuario no registrado");
                 }
             } else {
@@ -120,54 +137,106 @@ class UserController
 
     public static function save($data)
     {
+        $response = [
+            'state' => '',
+            'msg' => ''
+        ];
         $validate = self::validate($data);
         if ($validate == "ok") {
             if (User::getBy("id", $data["new_id"]) == false) {
                 if (User::getBy("username", $data["new_username"]) == false) {
-                    if(User::getBy("email", $data["new_email"]) == false){
+                    if (User::getBy("email", $data["new_email"]) == false) {
                         $data['new_password'] = self::hash($data['new_password']);
                         $result =  User::save($data);
                         if ($result == "ok") {
-                            self::alert("success", "Registro exitoso, ya puede iniciar sesión.");
+                            //self::alert("success", "Registro exitoso, ya puede iniciar sesión.");
+                            $response['state'] = 'success';
+                            $response['msg'] = 'Registro exitoso, ya puede iniciar sesión.';
                         }
                     } else {
-                        self::alert("danger", "El correo ingresado ya se encuentra registrado en la base de datos.");
+                        // self::alert("danger", "El correo ingresado ya se encuentra registrado en la base de datos.");
+                        $response['state'] = 'error';
+                        $response['msg'] = 'El correo ingresado ya se encuentra registrado en la base de datos.';
                     }
                 } else {
-                    self::alert("danger", "El usuario ingresado ya se encuentra registrado en la base de datos.");
-                    // return self::toJson("Error", "Este usuario ya se encuentra registrado en la base de datos.");
+                    //self::alert("danger", "El usuario ingresado ya se encuentra registrado en la base de datos.");
+                    $response['state'] = 'error';
+                    $response['msg'] = 'El usuario ingresado ya se encuentra registrado en la base de datos.';
                 }
             } else {
-                self::alert("danger", "El id ingresado ya se encuentra registrado en la base de datos.");
+                //self::alert("danger", "El id ingresado ya se encuentra registrado en la base de datos.");
+                $response['state'] = 'error';
+                $response['msg'] = 'El usuario ingresado ya se encuentra registrado en la base de datos.';
                 // return self::toJson("Error", "Este id ya se encuentra registrado en la base de datos.");
             }
         } else {
-            self::alert("danger", $validate);
+            //self::alert("danger", $validate);
+            $response['state'] = 'error';
+            $response['msg'] = $validate;
         }
-        
-        // return self::toJson("Error", $validate);
+
+        return $response;
+    }
+
+    public static function oldPassword($data)
+    {
+        if ($data['up_passsword'] == "") {
+            $user = User::getBy("id", $data['id']);
+            $data['up_passsword'] = $user['password'];
+        }
+        return $data;
     }
 
     public static function update($data)
     {
-        $validate = self::validate($data);
+        $response = [
+            'state' => '',
+            'msg' => ''
+        ];
+        $validate = self::validate2($data);
         if ($validate == "ok") {
-            if (User::getBy("username", $data["username"]) == null) {
-                return User::update($data);
+            if (User::getByAndId("username", $data["up_username"], "id", $data["up_id"]) != false) {
+                if (User::getByAndId("email", $data["up_email"], "id", $data["up_id"]) != false) {
+                    $data = self::oldPassword($data);
+                    $rta =  User::update($data);
+                    if ($rta) {
+                        $response['state'] = 'success';
+                        $response['msg'] = 'Usuario actualizado';
+                    }
+                } else {
+                    $response['state'] = 'error';
+                    $response['msg'] = 'El correo ingresado ya está asociado a otro usuario';
+                }
             } else {
-                return self::toJson("Error", "Este usuario ya se encuentra registrado en la base de datos.");
+                $response['state'] = 'error';
+                $response['msg'] = 'El usuario ingresado ya está asociado a otro usuario';
             }
+        } else {
+            $response['state'] = 'error';
+            $response['msg'] = $validate;
         }
-        return self::toJson("Error", $validate);
+
+
+        return $response;
     }
 
-    public static function updateColumn($id, $column, $value){
+    public static function updateColumn($id, $column, $value)
+    {
         return User::updateValue($column, $value, "id", $id);
     }
 
     public static function delete($id)
     {
-        return User::delete($id);
+        $response = [
+            'state' => 'error',
+            'msg' => 'No existe un usuario con el id recibido'
+        ];
+        $rta = User::delete($id);
+        if ($rta == "ok") {
+            $response['state'] = 'success';
+            $response['msg'] = 'Usuario eliminado';
+        }
+        return $response;
     }
 
     public static function recover($email)

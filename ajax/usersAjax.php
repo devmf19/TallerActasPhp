@@ -2,6 +2,52 @@
 // require_once "../controller/userController.php";
 // require_once "../model/user.php";
 class UsersAjax{
+
+    private function addBtn($rta){
+        require_once "../controller/userController.php";
+        require_once "../model/user.php";
+
+        if($rta == false || empty($rta)){
+            $rta = [
+                "num" => "",
+                "id" => "",
+                "name" => "",
+                "lastname" => "",
+                "username" => "",
+                "tipoid" => "",
+                "rol" => "",
+                "btn" => ""
+            ];
+        } else {
+            for($i = 0; $i < count($rta); $i++){
+                $rta[$i]["num"] = $i + 1;
+                $id = $rta[$i]["id"];
+
+                if($rta[$i]['role'] == 1){
+                    $rol = "<td><button class='btn btn-danger btn-xs btnSetRole' userId='".$id."' role='1'>Informes</button></td>";
+                    $rta[$i]["role"] = $rol;
+                } else {
+                    $rol = "<td><button class='btn btn-success btn-xs btnSetRole' userId='".$id."' role='2'>Administrador</button></td>";
+                    $rta[$i]["role"] = $rol;
+                }
+
+                $btn = "<td>
+                <div class='btn-toolbar'> 
+                  <div class='btn-group'>
+                    <button class='btn btn-warning btnUpdateUser' userId='".$id."' data-toggle='modal' data-target='#modalUpdateUser'><i class='fa fa-pencil'></i></button>
+                  </div>  
+                  <div class='btn-group'>
+                    <button class='btn btn-danger btnDeleteUser' userId='".$id."'><i class='fa fa-times'></i></button>
+                  </div> 
+                </div>
+              </td>"; 
+                $rta[$i]["btn"] = $btn;
+                
+            }
+        }
+        
+        return $rta;
+    }
     
     function login($username, $password){
         UserController::login($username, $password);
@@ -12,8 +58,11 @@ class UsersAjax{
         UserController::recover($email);
     }
 
-    function register($data){
-        UserController::save($data);
+    function register($data){ 
+        require_once "../controller/userController.php";
+        require_once "../model/user.php";
+        $rta = UserController::save($data);
+        echo json_encode($rta);
     }
 
     function getUser($id){
@@ -34,8 +83,24 @@ class UsersAjax{
         require_once "../controller/userController.php";
         require_once "../model/user.php";
         $rta = UserController::list();
+        $rta = self::addBtn($rta);
         echo json_encode($rta);
     }
+
+    function update($data){
+        require_once "../controller/userController.php";
+        require_once "../model/user.php";
+        $rta = UserController::update($data);
+        echo json_encode($rta);
+    }
+
+    function delete($id){
+        require_once "../controller/userController.php";
+        require_once "../model/user.php";
+        $rta = UserController::delete($id);
+        echo json_encode($rta);
+    }
+
     
 }
 
@@ -75,6 +140,18 @@ if(isset($_POST) && !empty($_POST)){
 
             $ajax->getAll();
             
+    } else if(!empty($_POST["option"]) && $_POST["option"] == "updateUser"){ //GET USER
+        if(!empty($_POST['up_id'])){
+
+            $ajax->update($_POST);
+            
+        }
+    } else if(!empty($_POST["option"]) && $_POST["option"] == "deleteUser"){ //GET USER
+        if(!empty($_POST['id'])){
+
+            $ajax->delete($_POST['id']);
+            
+        }
     }
     
 

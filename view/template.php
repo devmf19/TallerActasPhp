@@ -123,6 +123,7 @@
                     $route == "home" ||
                     $route == "reports" ||
                     $route == "actas" ||
+                    $route == "seeActa" ||
                     $route == "commitments" ||
                     $route == "assistants" ||
                     $route == "users" ||

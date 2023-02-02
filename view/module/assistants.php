@@ -1,17 +1,5 @@
-<div class="content-wrapper">
 
-<section class="content-header">
-
-  <h1>
-    Asistentes
-  </h1>
-
-</section>
-
-<!-- Contenido principal -->
-<section class="content">
-
- <div class="box">
+<div class="box box-solid">
 
    <div class="box-header with-border">
      <button class="btn btn-primary" data-toggle="modal" data-target="#modalNewAssistant">
@@ -21,53 +9,19 @@
 
    <div class="box-body">
 
-     <table class="table table-bordered table-striped dt-responsive tabla">
+     <table class="table table-bordered table-striped dt-responsive" id="assistantsTable">
 
        <thead>
          <tr>
            <th style="width:10px">#</th>
            <th>Nombre de asistente</th>
-           <th>Asunto acta</th>
            <th>Opciones</th>
          </tr>
        </thead>
 
-       <tbody>
-     
-       <?php
-
-       $assistants = AssistantController::list();
-
-       foreach($assistants as $key => $data) {
-         $assistant = UserController::getOne($data["assistant_id"]);
-         $acta = ActaController::getOne($data["acta_id"]);
-         echo ' <tr>
-               <td>'.($key+1).'</td>
-               <td>'.$assistant["name"].' .'.$assistant["lastname"].'</td>
-               <td>'.$acta["issue"].'</td>
-               <td>
-                 <div class="btn-toolbar">';
-                 if($_SESSION["role"] == "1"){
-
-                   echo '
-                         <div class="btn-group">
-                           <button class="btn btn-danger btnDeleteAssistant" id="'.$data["id"].'"><i class="fa fa-times"></i></button>
-                         </div> 
-                   ';
- 
-                 } 
-                 echo ' </div>
-               </td>
-
-             </tr>';
-       }
-       ?>
-       </tbody>
-
      </table>
    </div>
 
-</section>
 </div>
 
 <!-- ---------------------------------------------------------- -->
@@ -98,7 +52,7 @@
               <div class="input-group">
                 
               <span class="input-group-addon"><i class="fa fa-th"></i></span> 
-              <select class="form-control input-lg" id="acta_id" name="acta_id" required>
+              <select class="form-control input-lg" id="new_acta_id_a" name="new_acta_id_a" required>
                 <option value="">Acta</option>
                 <?php
                   $actas = ActaController::list();
@@ -116,7 +70,7 @@
               <div class="input-group">
                 
               <span class="input-group-addon"><i class="fa fa-th"></i></span> 
-              <select class="form-control input-lg" id="assistant_id" name="assistant_id" required>
+              <select class="form-control input-lg" id="new_assistant_id" name="new_assistant_id" required>
                 <option value="">Asistente</option>
                 <?php
                   $users = UserController::list();

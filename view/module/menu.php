@@ -18,33 +18,29 @@
                 </a>
             </li>
 
-            <li>
-                <a href="actas">
-                    <i class="fa fa-th"></i>
-                    <span>Actas</span>
-                </a>
-            </li>
+            <?php
 
-            <li>
-                <a href="commitments">
-                    <i class="fa fa-truck"></i>
-                    <span>Compromisos</span>
-                </a>
-            </li>
+            if ($_SESSION["role"] == 2) {
+                ?>
+                    <li>
+                        <a href="actas">
+                            <i class="fa fa-th"></i>
+                            <span>Actas</span>
+                        </a>
+                    </li>
 
-            <li>
-                <a href="assistants">
-                    <i class="fa fa-copyright"></i>
-                    <span>Asistentes</span>
-                </a>
-            </li>
+                    <li>
+                        <a href="users">
+                            <i class="fa fa-user"></i>
+                            <span>Usuarios</span>
+                        </a>
+                    </li>
+                <?php 
+            }
 
-            <li>
-                <a href="users">
-                    <i class="fa fa-user"></i>
-                    <span>Usuarios</span>
-                </a>
-            </li>
+            ?>
+
+            
 
         </ul>
 

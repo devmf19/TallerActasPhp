@@ -1,3 +1,30 @@
+function showTableAsistant(response) {
+    if (response.num == '') {
+        swal({
+            type: "error",
+            title: "Sin resultados",
+            showConfirmButton: true,
+            confirmButtonText: "Cerrar"
+        })
+    }
+    $("#assistantsTable").dataTable().fnDestroy();
+    $('#assistantsTable').DataTable({
+        data: response,
+        columns: [
+            { data: "num" },
+            { data: "issue" },
+            { data: "creator_id" },
+            { data: "created_date" },
+            { data: "start_time" },
+            { data: "end_time" },
+            { data: "in_charge" },
+            { data: "btn" }
+        ]
+    });
+
+}
+
+
 $(".tabla").on("click", ".btnDeleteAssistant", function () {
 
     var id = $(this).attr("id");
