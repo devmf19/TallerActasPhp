@@ -170,6 +170,7 @@
     <script src="view/js/reports.js"></script>
     <script src="view/js/users.js"></script>
     <script src="view/js/actas.js"></script>
+    <script src="view/js/commitments.js"></script>
     <script src="view/js/assistants.js"></script>
 
 </body>

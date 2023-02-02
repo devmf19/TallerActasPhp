@@ -1,10 +1,6 @@
 <?php
 
 class CommitmentController {
-    public static function toJson($tittle, $data) {
-        header('Content-type:application/json;charset=utf-8');
-        return json_encode($data, JSON_UNESCAPED_SLASHES);
-    }
 
     public static function getOne($id){
         $column = "id";
@@ -15,70 +11,57 @@ class CommitmentController {
         return Commitment::getAll();
     }
 
-    public static function save(){
-        $data = $_POST;
+    public static function save($data){
+        //$data = $_POST;
+        $response = [
+            'state' => '',
+            'msg' => ''
+        ];
         if(isset($data["new_acta_id_c"]) && $data["new_acta_id_c"] != ""){
             $rta = Commitment::save($data);
 
             if ($rta == "ok") {
-                echo '<script>
-                    swal({
-                        type: "success",
-                        title: "¡Se registró el compromiso!",
-                        showConfirmButton: true,
-                        confirmButtonText: "Cerrar"
-                    }).then(function(result){
-                        if(result.value){
-                            window.location = "commitments";
-                        }
-                    });
-                </script>';
+                $response['state'] = 'success';
+                $response['msg'] = 'Compromiso registrado.';
+            } else {
+                $response['state'] = 'error';
+                $response['msg'] = 'No se regitró el el compromiso';
             }
+        } else {
+            $response['state'] = 'error';
+            $response['msg'] = 'No se recibió el id del acta.';
         }
+        return $response;
     }
 
-    public static function update(){
-        $data = $_POST;
-        if(!empty($data)){
-            $rta = Commitment::update($data);
-            if ($rta == "ok") {
-                echo '<script>
-                    swal({
-                        type: "success",
-                        title: "Compromiso actualizdo",
-                        showConfirmButton: true,
-                        confirmButtonText: "Cerrar"
-                    }).then(function(result) {
-                        if (result.value) {
-                            window.location = "commitments";
-                        }
-					});
-				</script>';
-            }
-        }
-    }
+    // public static function update(){
+    //     $data = $_POST;
+    //     $response = [
+    //         'state' => '',
+    //         'msg' => ''
+    //     ];
+    //     if(!empty($data)){
+    //         $rta = Commitment::update($data);
+    //         if ($rta == "ok") {
+    //             $response['state'] = 'success';
+    //             $response['msg'] = 'Compromiso registrada.';
+    //         } else {
+    //             $response['state'] = 'error';
+    //             $response['msg'] = 'No se regitró el el compromioso';
+    //         }
+    //     }
+    // }
 
-    public static function delete(){
-        if (isset($_GET["id_commitment"])) {
-            
-            $id = $_GET["id_commitment"];
-            $rta = Commitment::delete($id);
-
-            if ($rta == "ok") {
-                echo '<script>
-                    swal({
-                        type: "success",
-                        title: "Compromiso eliminado",
-                        showConfirmButton: true,
-                        confirmButtonText: "Cerrar",
-                        closeOnConfirm: false
-                    }).then(function(result) {
-                        if (result.value) {
-                            window.location = "commitments";
-                        }
-                    });
-				</script>';
-            }
+    public static function delete($id){
+        $response = [
+            'state' => 'error',
+            'msg' => 'No existe un compromiso con el id recibido'
+        ];
+        $rta = Commitment::delete($id);
+        if ($rta == "ok") {
+            $response['state'] = 'success';
+            $response['msg'] = 'Compromiso eliminada';
         }
+        return $response;
     }
 }

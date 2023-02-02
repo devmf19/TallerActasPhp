@@ -1,14 +1,6 @@
 getUsers();
 
 function showTableUser(response) {
-    if (response.num == '') {
-        swal({
-            type: "error",
-            title: "Sin resultados",
-            showConfirmButton: true,
-            confirmButtonText: "Cerrar"
-        })
-    }
     $("#usersTable").dataTable().fnDestroy();
     $('#usersTable').DataTable({
         data: response,
@@ -118,7 +110,7 @@ $("#usersTable").on("click", ".btnDeleteUser", function () {
 
         }
     })
-})
+});
 
 
 $("#usersTable").on("click", ".btnSetRole", function () {

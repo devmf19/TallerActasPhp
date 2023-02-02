@@ -112,14 +112,6 @@ $("#actasTable").on("click", ".btnDeleteActa", function () {
 })
 
 function showTableActas(response) {
-    if (response.num == '') {
-        swal({
-            type: "error",
-            title: "Sin resultados",
-            showConfirmButton: true,
-            confirmButtonText: "Cerrar"
-        })
-    }
     //console.log(response);
     $("#actasTable").dataTable().fnDestroy();
     $('#actasTable').DataTable({

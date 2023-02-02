@@ -1,69 +1,70 @@
 <?php
 
-class AssistantController {
+class AssistantController
+{
 
-    public static function toJson($tittle, $data) {
-        // header('Content-type:application/json;charset=utf-8');
-        return json_encode($data, JSON_UNESCAPED_SLASHES);
-    }
-
-    public static function list(){
+    public static function list()
+    {
         return Assistant::getAll();
     }
 
-    public static function getOne($id){
+    public static function getOne($id)
+    {
         $column = "id";
         return User::getBy($column, $id);
     }
 
-    public static function save(){
-        $data = $_POST;
-        if (isset($_POST["acta_id"]) && $_POST["acta_id"] != "" && isset($_POST["assistant_id"]) && $_POST["assistant_id"] != "") {
+    public static function save($data)
+    {
+        //$data = $_POST;
+        $response = [
+            'state' => '',
+            'msg' => ''
+        ];
+        if (isset($data["new_acta_id_a"]) && $data["new_acta_id_a"] != "") {
+            if (isset($data["new_assistant_id"]) && $data["new_assistant_id"] != "") {
+                $exist = Assistant::exist($data["new_assistant_id"], $data["new_acta_id_a"]);
+                if (empty($exist) || !$exist) {
+                    $rta = Assistant::save($data);
 
-            $rta = Assistant::save($data);
-
-            if ($rta == "ok") {
-                echo '<script>
-                    swal({
-                        type: "success",
-                        title: "¡Se registró un nuevo asistente!",
-                        showConfirmButton: true,
-                        confirmButtonText: "Cerrar"
-                    }).then(function(result){
-                        if(result.value){
-                            window.location = "assistants";
-                        }
-                    });
-                </script>';
+                    if ($rta == "ok") {
+                        $response['state'] = 'success';
+                        $response['msg'] = 'Asistente registrado.';
+                    } else {
+                        $response['state'] = 'error';
+                        $response['msg'] = 'No se regitró el el asistente';
+                    }
+                } else {
+                    $response['state'] = 'error';
+                    $response['msg'] = 'El usuario ya registró su asistencia anteriormente.';
+                }
+            } else {
+                $response['state'] = 'error';
+                $response['msg'] = 'No se recibió el id del asistente.';
             }
+        } else {
+            $response['state'] = 'error';
+            $response['msg'] = 'No se recibió el id del acta.';
         }
+        return $response;
     }
 
-    public static function update($data){
+    public static function update($data)
+    {
         return Assistant::update($data);
     }
 
-    public static function delete(){
-        if (isset($_GET["id_assistant"])) {
-            
-            $id = $_GET["id_assistant"];
-            $rta = Assistant::delete($id);
-
-            if ($rta == "ok") {
-                echo '<script>
-                    swal({
-                        type: "success",
-                        title: "Asistente eliminado",
-                        showConfirmButton: true,
-                        confirmButtonText: "Cerrar",
-                        closeOnConfirm: false
-                    }).then(function(result) {
-                        if (result.value) {
-                            window.location = "assistants";
-                        }
-                    });
-				</script>';
-            }
+    public static function delete($id)
+    {
+        $response = [
+            'state' => 'error',
+            'msg' => 'No existe un asistente con el id recibido'
+        ];
+        $rta = Assistant::delete($id);
+        if ($rta == "ok") {
+            $response['state'] = 'success';
+            $response['msg'] = 'Asistente eliminado';
         }
+        return $response;
     }
 }

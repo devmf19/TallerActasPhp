@@ -3,19 +3,6 @@
 require_once 'conection.php';
 
 class Assistant {
-
-    public static function toJson($name, $data) {
-        // header('Content-type:application/json;charset=utf-8');
-        return json_encode($data, JSON_UNESCAPED_SLASHES);
-    }
-
-    public static function toJson2($name, $data){
-        // header('Content-type:application/json;charset=utf-8');
-        return json_encode([
-            $name => $data
-        ]);
-    }
-
     public static function getAll() {
         $table = "assistants";
         $sql = "SELECT * FROM {$table}";
@@ -29,11 +16,19 @@ class Assistant {
         $sql = "SELECT * FROM {$table} WHERE {$colum} = {$value}";
         $stmt = Conection::conect()->prepare($sql);
         
-        if ($stmt->execute()) {
-            return "ok";
-        } else {
-            return "error";
-        }
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public static function exist($value1, $value2) {
+        $table = "assistants";
+        $sql = "SELECT * FROM {$table} WHERE assistant_id = {$value1} AND acta_id = {$value2}";
+        $stmt = Conection::conect()->prepare($sql);
+        
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 
     public static function save($data) {
@@ -41,8 +36,9 @@ class Assistant {
         $sql = "INSERT INTO {$table} (acta_id, assistant_id) VALUES (?,?)";
         $stmt = Conection::conect()->prepare($sql);
 
-        $stmt->bindParam(1, $data['acta_id']);
-        $stmt->bindParam(2, $data['assistant_id']);
+        $stmt->bindParam(1, $data['new_acta_id_a']);
+        $stmt->bindParam(2, $data['new_assistant_id']);
+        
         if ($stmt->execute()) {
             return "ok";
         } else {

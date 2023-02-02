@@ -4,18 +4,6 @@ require_once 'conection.php';
 
 class Commitment {
 
-    public static function toJson($name, $data) {
-        header('Content-type:application/json;charset=utf-8');
-        return json_encode($data, JSON_UNESCAPED_SLASHES);
-    }
-
-    public static function toJson2($name, $data){
-        header('Content-type:application/json;charset=utf-8');
-        return json_encode([
-            $name => $data
-        ]);
-    }
-
     public static function getAll() {
         $table = "commitment";
         $sql = "SELECT * FROM {$table}";
@@ -36,7 +24,7 @@ class Commitment {
         $stmt = Conection::conect()->prepare($sql);
         $stmt->execute();
 
-        return $stmt->fetch();
+        return $stmt->fetchAll();
     }
 
     public static function save($data) {
@@ -49,6 +37,7 @@ class Commitment {
         $stmt->bindParam(3, $data['new_description_c']);
         $stmt->bindParam(4, $data['new_start_date_c']);
         $stmt->bindParam(5, $data['new_end_date_c']);
+        
         if ($stmt->execute()) {
             return "ok";
         } else {
@@ -91,13 +80,16 @@ class Commitment {
     public static function delete($id) {
         $table = "commitment";
         $sql = "DELETE FROM {$table} WHERE id = ?";
-        $stmt = Conection::conect()->prepare($sql);
-        $stmt->bindParam(1, $id);
+        $result = self::getBy("id", $id);
+        if ($result != null) {
+            $sql = "DELETE FROM {$table} WHERE id = ?";
 
-        if ($stmt->execute()) {
+            $stmt = Conection::conect()->prepare($sql);
+            $stmt->bindParam(1, $id);
+
+            $stmt->execute();
             return "ok";
-        } else {
-            return "error";
         }
+        return "error";
     }
 }
