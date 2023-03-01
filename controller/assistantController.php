@@ -8,15 +8,8 @@ class AssistantController
         return Assistant::getAll();
     }
 
-    public static function getOne($id)
-    {
-        $column = "id";
-        return User::getBy($column, $id);
-    }
-
     public static function save($data)
     {
-        //$data = $_POST;
         $response = [
             'state' => '',
             'msg' => ''
@@ -47,11 +40,6 @@ class AssistantController
             $response['msg'] = 'No se recibió el id del acta.';
         }
         return $response;
-    }
-
-    public static function update($data)
-    {
-        return Assistant::update($data);
     }
 
     public static function delete($id)

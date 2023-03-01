@@ -1,9 +1,6 @@
 <?php
-// require_once "../controller/userController.php";
-// require_once "../model/user.php";
 class UsersAjax
 {
-
     private function addBtn($rta)
     {
         require_once "../controller/userController.php";
@@ -53,7 +50,6 @@ class UsersAjax
     function login($username, $password)
     {
         UserController::login($username, $password);
-        //echo json_encode($rta);
     }
 
     function recover($email)

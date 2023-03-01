@@ -19,10 +19,10 @@ class Email {
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
             $mail->Host       = 'smtp.gmail.com'; 
             $mail->Port       = 587; 
-            $mail->Username   = 'actasunicortaller@gmail.com';
-            $mail->Password   = 'teldgmvqortfuhjd';
+            $mail->Username   = '';
+            $mail->Password   = '';
 
-            $mail->setFrom('actasunicortaller@gmail.com', 'Actas Unicor');
+            $mail->setFrom('', '');
             $mail->addAddress($toSend); 
             $mail->isHTML(true);
             $mail->Subject = $issue;

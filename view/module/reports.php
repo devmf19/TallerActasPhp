@@ -23,7 +23,6 @@
           <option value="4">Por código de acta</option>
           <option value="5">Por asunto asunto de acta</option>
         </select>
-        <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#modalNewActa"> Nueva acta</button> -->
       </div>
 
       <div class="box-body">

@@ -253,12 +253,7 @@ if (!isset($_GET['id']) || empty($_GET['id']) || !is_numeric($_GET['id'])) {
 
                     <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-success" data-dismiss="modal" onclick="createCommitment()">Registrar compromiso</button>
-                    <?php
-
-                    // $crateCommitment = new CommitmentController();
-                    // $crateCommitment->save();
-
-                    ?>
+                    
 
                 </div>
             </form>
@@ -318,12 +313,7 @@ if (!isset($_GET['id']) || empty($_GET['id']) || !is_numeric($_GET['id'])) {
 
                     <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-success" data-dismiss="modal" onclick="createAssistant()">Registrar asistencia</button>
-                    <?php
-
-                    // $createAssistant = new assistantController();
-                    // $createAssistant->save();
-
-                    ?>
+                    
                 </div>
             </form>
         </div>

@@ -161,12 +161,7 @@
 
           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
           <button type="submit" id="btn_new_acta" class="btn btn-success">Registrar compromiso</button>
-          <?php
 
-          // $crateCommitment = new CommitmentController();
-          // $crateCommitment->save();
-
-          ?>
 
         </div>
       </form>
@@ -296,12 +291,7 @@
 
           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
           <button type="submit" class="btn btn-success">Actualizar acta</button>
-          <?php
 
-          //   $updateActa = new ActaController();
-          //   $updateActa->update();
-
-          ?>
         </div>
 
       </form>
@@ -309,11 +299,3 @@
     </div>
   </div>
 </div>
-
-
-<?php
-
-// $deleteActa = new ActaController();
-// $deleteActa->delete();
-
-?>

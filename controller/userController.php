@@ -8,16 +8,6 @@ class UserController
     {
         return hash('sha512', self::SALT . $password);
     }
-    private static function verify($password, $hash)
-    {
-        return ($hash == self::hash($password));
-    }
-
-    public static function toJson($tittle, $data)
-    {
-        header('Content-type:application/json;charset=utf-8');
-        return json_encode($data, JSON_UNESCAPED_SLASHES);
-    }
 
     public static function alert($type, $tittle)
     {
@@ -81,7 +71,7 @@ class UserController
             return "Tipo de id inválido.";
         }
     }
-    
+
 
     public static function login($username, $password)
     {
@@ -119,7 +109,6 @@ class UserController
                 self::alert("warning", "El usuario no puede contener carácteres especiales");
             }
         }
-        //return $response;
     }
 
     public static function list()
@@ -151,28 +140,22 @@ class UserController
                         $data['new_password'] = self::hash($data['new_password']);
                         $result =  User::save($data);
                         if ($result == "ok") {
-                            //self::alert("success", "Registro exitoso, ya puede iniciar sesión.");
                             $response['state'] = 'success';
                             $response['msg'] = 'Registro exitoso, ya puede iniciar sesión.';
                         }
                     } else {
-                        // self::alert("danger", "El correo ingresado ya se encuentra registrado en la base de datos.");
                         $response['state'] = 'error';
                         $response['msg'] = 'El correo ingresado ya se encuentra registrado en la base de datos.';
                     }
                 } else {
-                    //self::alert("danger", "El usuario ingresado ya se encuentra registrado en la base de datos.");
                     $response['state'] = 'error';
                     $response['msg'] = 'El usuario ingresado ya se encuentra registrado en la base de datos.';
                 }
             } else {
-                //self::alert("danger", "El id ingresado ya se encuentra registrado en la base de datos.");
                 $response['state'] = 'error';
                 $response['msg'] = 'El id ingresado ya se encuentra registrado en la base de datos.';
-                // return self::toJson("Error", "Este id ya se encuentra registrado en la base de datos.");
             }
         } else {
-            //self::alert("danger", $validate);
             $response['state'] = 'error';
             $response['msg'] = $validate;
         }
@@ -243,7 +226,6 @@ class UserController
 
     public static function recover($email)
     {
-        $data = $_POST;
         if ($email != "") {
             $user = self::getBy("email", $email);
             if ($user == false) {
@@ -271,19 +253,6 @@ class UserController
                                 }
                             });
                         </script>';
-                } else {
-                    // echo '<script>
-                    //         swal({
-                    //             type: "error",
-                    //             title: "Error: "'.error_get_last()['message'].',
-                    //             showConfirmButton: true,
-                    //             confirmButtonText: "Cerrar"
-                    //         }).then(function(result){
-                    //             if(result.value){
-                    //                 window.location = "login";
-                    //             }
-                    //         });
-                    //     </script>';
                 }
             }
         }
@@ -303,32 +272,6 @@ class UserController
                     $newPassword = self::hash($_POST["rec_password"]);
                     $rta = User::updateValue("password", $newPassword, "id", $id);
                     User::updateValue("token", "", "id", $id);
-
-                    if ($rta == "ok") {
-                        // echo '<script>
-                        //     swal({
-                        //         type: "success",
-                        //         title: "Contraseña actualizada",
-                        //         showConfirmButton: true,
-                        //         confirmButtonText: "Cerrar",
-                        //         closeOnConfirm: false
-                        //     }).then(function(result) {
-                        //         if (result.value) {
-                        //             window.location = "login";
-                        //         }
-                        //     });
-                        // </script>';
-                    }
-                } else {
-                    // echo '<script>
-                    //         swal({
-                    //             type: "error",
-                    //             title: "Ingrese una nueva contraseña",
-                    //             showConfirmButton: true,
-                    //             confirmButtonText: "Cerrar",
-                    //             closeOnConfirm: false
-                    //         });
-                    //     </script>';
                 }
             }
         }

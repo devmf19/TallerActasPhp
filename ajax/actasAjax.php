@@ -128,17 +128,15 @@ $ajax = new ActasAjax();
 
 
 if (isset($_POST) && !empty($_POST)) {
-    if (!empty($_POST["option"]) && $_POST["option"] == "getBetween") { // lOGIN
+    if (!empty($_POST["option"]) && $_POST["option"] == "getBetween") { 
         if (!empty($_POST["initialDate"]) && !empty($_POST["endDate"])) {
 
             $ajax->getBetween($_POST["initialDate"], $_POST["endDate"]);
         }
     } else if (!empty($_POST["option"]) && $_POST["option"] == "getPending") {
-        // if(isset($_GET["mostrar"])){
-        //     $ajax->getAll();
-        // }
+        
         $ajax->getPending();
-        //$ajax->getAll();
+        
     } else if (!empty($_POST["option"]) && $_POST["option"] == "getByActa") {
         if (!empty($_POST["id"])) {
 

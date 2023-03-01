@@ -78,9 +78,7 @@
                 <div class="col-xs-12">
                     <button type="button" class="btn btn-primary btn-block btn-flat" onclick="createUser()">Registrarme</button>
                 </div>
-                <?php
-                    //$signup = new UsersAjax();
-                ?>
+                
             </div>
             <br>
             <a href="login">Ya tengo una cuenta</a>

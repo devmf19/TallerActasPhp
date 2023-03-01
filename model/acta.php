@@ -5,20 +5,6 @@ require_once 'conection.php';
 class Acta
 {
 
-    public static function toJson($name, $data)
-    {
-        header('Content-type:application/json;charset=utf-8');
-        return json_encode($data, JSON_UNESCAPED_SLASHES);
-    }
-
-    public static function toJson2($name, $data)
-    {
-        header('Content-type:application/json;charset=utf-8');
-        return json_encode([
-            $name => $data
-        ]);
-    }
-
     public static function getAll()
     {
         $table = "acta";
@@ -71,7 +57,6 @@ class Acta
         $stmt->execute();
 
         $result = $stmt->fetchAll();
-        // return $this->toJson("kkk", $result);
         return $result;
     }
 
@@ -86,7 +71,6 @@ class Acta
         $stmt->execute();
 
         $result = $stmt->fetchAll();
-        // return $this->toJson("kkk", $result);
         return $result;
     }
 

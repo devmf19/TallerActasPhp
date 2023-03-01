@@ -11,7 +11,6 @@ class Commitment {
         $stmt->execute();
 
         $result = $stmt->fetchAll();
-        // return $this->toJson("kkk", $result);
         return $result;
     }
 

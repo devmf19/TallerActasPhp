@@ -176,13 +176,7 @@
 
          <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
          <button type="button" id="btn_new_acta" class="btn btn-success" data-dismiss="modal" onclick="crateActa()">Registrar acta</button>
-         <?php
-
-            // $crateActa = new ActaController();
-            // $crateActa->save();
-
-           ?>
-
+      
        </div>
     </form>
    
@@ -310,6 +304,7 @@
 
         <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
         <button type="button" class="btn btn-success" data-dismiss="modal" onclick="updateActa()">Actualizar acta</button>
+        
       </div>
     
      </form>

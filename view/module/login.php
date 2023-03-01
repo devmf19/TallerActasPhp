@@ -20,7 +20,6 @@
                     <button class="btn btn-primary btn-block btn-flat" id="btnLoginn">Iniciar sesión</button>
                 </div>
                 <?php
-                    // require_once "ajax/usersAjax.php";
                     $login = new UsersAjax();
                 ?>
             </div>

@@ -15,7 +15,7 @@
                     <button type="submit" class="btn btn-primary btn-block btn-flat">Actualizar contraseña</button>
                 </div>
                 <?php
-                $recover = UserController::newPassword();
+                 UserController::newPassword();
                 ?>
             </div>
         </form>

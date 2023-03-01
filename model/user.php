@@ -4,18 +4,6 @@ require_once 'conection.php';
 
 class User {
 
-    public function toJson($name, $data) {
-        header('Content-type:application/json;charset=utf-8');
-        return json_encode($data, JSON_UNESCAPED_SLASHES);
-    }
-
-    public function toJson2($name, $data){
-        header('Content-type:application/json;charset=utf-8');
-        return json_encode([
-            $name => $data
-        ]);
-    }
-
     public static function getAll() {
         $table = "users";
         $sql = "SELECT * FROM {$table}";
@@ -49,7 +37,6 @@ class User {
         $sql = "SELECT * FROM {$table} WHERE {$colum1} = {$value1} AND {$column2} = {$value2}";
         $stmt = Conection::conect()->prepare($sql);
         $stmt->execute();
-        // $stmt2 = $stmt->fetch();
 
         return $stmt->fetch();
     }

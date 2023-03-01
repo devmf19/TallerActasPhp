@@ -69,7 +69,6 @@ class ActaController
 
     public static function save($data)
     {
-        //$data = $_POST;
         $response = [
             'state' => '',
             'msg' => ''

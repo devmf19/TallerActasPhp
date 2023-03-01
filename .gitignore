@@ -1,0 +1,4 @@
+model/PHPMailer
+view/bower_components
+view/dist
+view/plugins

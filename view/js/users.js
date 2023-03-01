@@ -151,24 +151,6 @@ $("#usersTable").on("click", ".btnSetRole", function () {
 
             }
 
-            // if(window.matchMedia("(max-width:767px)").matches){
-
-            // 	 swal({
-            //       title: "El usuario ha sido actualizado",
-            //       type: "success",
-            //       confirmButtonText: "¡Cerrar!"
-            //     }).then(function(result) {
-            //         if (result.value) {
-
-            //         	window.location = "users";
-
-            //         }
-
-
-            // 	});
-
-            // }
-
         }
 
     })
@@ -287,8 +269,6 @@ function createUser() {
             if (response.state == 'success') {
                 window.location = "login";
             }
-
-
         }
 
     });

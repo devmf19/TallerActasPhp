@@ -12,7 +12,6 @@ class CommitmentController {
     }
 
     public static function save($data){
-        //$data = $_POST;
         $response = [
             'state' => '',
             'msg' => ''
@@ -33,24 +32,6 @@ class CommitmentController {
         }
         return $response;
     }
-
-    // public static function update(){
-    //     $data = $_POST;
-    //     $response = [
-    //         'state' => '',
-    //         'msg' => ''
-    //     ];
-    //     if(!empty($data)){
-    //         $rta = Commitment::update($data);
-    //         if ($rta == "ok") {
-    //             $response['state'] = 'success';
-    //             $response['msg'] = 'Compromiso registrada.';
-    //         } else {
-    //             $response['state'] = 'error';
-    //             $response['msg'] = 'No se regitró el el compromioso';
-    //         }
-    //     }
-    // }
 
     public static function delete($id){
         $response = [

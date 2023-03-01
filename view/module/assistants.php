@@ -91,21 +91,9 @@
 
         <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
         <button type="submit" class="btn btn-success">Registrar asistencia</button>
-        <?php
-
-         $createAssistant = new assistantController();
-         $createAssistant->save();
-
-         ?>
+        
       </div>
     </form>
   </div>
 </div>
 </div>
-
-<?php
-
-$deleteAssistant = new assistantController;
-$deleteAssistant->delete();
-
-?>
