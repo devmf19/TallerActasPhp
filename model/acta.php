@@ -45,6 +45,20 @@ class Acta
         return $stmt->fetchAll();
     }
 
+    public static function getByIssue( $value)
+    {
+        $table = "acta";
+        if (is_string($value)) {
+            $value = '"%' . $value . '%"';
+        }
+
+        $sql = "SELECT * FROM {$table} WHERE issue like {$value}";
+        $stmt = Conection::conect()->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
     public static function getBetween($initialDate, $endDate)
     {
         $table = "acta";

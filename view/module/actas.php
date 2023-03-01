@@ -14,7 +14,7 @@
  <div class="box">
 
    <div class="box-header with-border">
-     <button class="btn btn-primary" data-toggle="modal" data-target="#modalNewActa">
+     <button class="btn btn-primary" data-toggle="modal" data-target="#modalNewActa" onclick="setDate()">
        Nueva acta
      </button>
    </div>
@@ -73,7 +73,7 @@
               <div class="input-group">
                 
               <span class="input-group-addon"><i class="fa fa-th"></i></span> 
-              <select class="form-control input-lg" id="new_creator_id" name="new_creator_id" required>
+              <select class="form-control input-lg" id="new_creator_id" name="new_creator_id">
                 <option value="">Creador del acta</option>
                 <?php
                   $users = UserController::list();
@@ -101,7 +101,7 @@
              <div class="input-group">
 
                 <span class="input-group-addon">Fecha</span>
-                <input type="date" class="form-control input-lg" id="new_created_date" name="new_created_date" required>
+                <input type="date" class="form-control input-lg actualDate" id="new_created_date" name="new_created_date" required>
 
              </div>
            </div>
@@ -113,14 +113,14 @@
                 <div class="input-group">
 
                   <span class="input-group-addon">Inicia</span>
-                  <input type="time" class="form-control input-lg" id="new_start_time" name="new_start_time" min="09:00" max="22:00" required>
+                  <input type="time" class="form-control input-lg" id="new_start_time" name="new_start_time" min="06:00" max="22:00" required>
 
                 </div>
               </div>
               <div class="col-xs-6">
                 <div class="input-group">
 
-                  <input type="time" class="form-control input-lg" id="new_end_time" name="new_end_time" min="09:00" max="22:00" required>
+                  <input type="time" class="form-control input-lg" id="new_end_time" name="new_end_time" min="06:00" max="22:00" required>
                   <span class="input-group-addon">Termina</span>
 
                 </div>
@@ -134,7 +134,7 @@
               <div class="input-group">
                 
               <span class="input-group-addon"><i class="fa fa-th"></i></span> 
-              <select class="form-control input-lg" id="new_in_charge"  name="new_in_charge" required>
+              <select class="form-control input-lg" id="new_in_charge"  name="new_in_charge">
                 <option value="">Responsable del acta</option>
                 <?php
                   $users = UserController::list();
@@ -254,14 +254,14 @@
                 <div class="input-group">
 
                   <span class="input-group-addon">Inicia</span>
-                  <input type="time" class="form-control input-lg" id="up_start_time" name="up_start_time" min="09:00" max="18:00" required>
+                  <input type="time" class="form-control input-lg" id="up_start_time" name="up_start_time" min="06:00" max="22:00" required>
 
                 </div>
               </div>
               <div class="col-xs-6">
                 <div class="input-group">
 
-                  <input type="time" class="form-control input-lg" id="up_end_time" name="up_end_time" min="09:00" max="18:00" required>
+                  <input type="time" class="form-control input-lg" id="up_end_time" name="up_end_time" min="06:00" max="22:00" required>
                   <span class="input-group-addon">Termina</span>
 
                 </div>
@@ -310,12 +310,6 @@
 
         <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
         <button type="button" class="btn btn-success" data-dismiss="modal" onclick="updateActa()">Actualizar acta</button>
-        <?php
-
-          // $updateActa = new ActaController();
-          // $updateActa->update();
-
-         ?>
       </div>
     
      </form>
@@ -323,11 +317,3 @@
   </div>
 </div>
 </div>
-
-
-<?php
-
-// $deleteActa = new ActaController();
-// $deleteActa->delete();
-
-?>

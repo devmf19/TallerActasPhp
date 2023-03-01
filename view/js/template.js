@@ -29,3 +29,9 @@ $(".tabla").DataTable({
     }
 
 });
+
+function setDate() {
+    const date = new Date();
+    $(".actualDate").val(date.toJSON().slice(0, 10));
+    //document.getElementsByClassName("actualDate").value = date.toJSON().slice(0, 10);
+}

@@ -28,30 +28,6 @@ class UserController
             </div>';
     }
 
-    public static function validate2($data)
-    {
-        if ($data["up_tipoid"] == 1 || $data["up_tipoid"] == 2) {
-            if (is_numeric($data["up_id"])) {
-                if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $data["up_name"])) {
-                    if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $data["up_lastname"])) {
-                        if (preg_match('/^[a-zA-Z0-9]+$/', $data["up_username"])) {
-                            return "ok";
-                        } else {
-                            return "La usuario ingresado contiene carácteres inválidos.";
-                        }
-                    } else {
-                        return "El apellido ingresado contiene carácteres inválidos.";
-                    }
-                } else {
-                    return "El nombre ingresado contiene carácteres inválidos.";
-                }
-            } else {
-                return "Solo puede ingresar números en el id.";
-            }
-        } else {
-            return "Tipo de id inválido.";
-        }
-    }
     public static function validate($data)
     {
         if ($data["new_tipoid"] == 1 || $data["new_tipoid"] == 2) {
@@ -80,6 +56,32 @@ class UserController
             return "Tipo de id inválido.";
         }
     }
+
+    public static function validate2($data)
+    {
+        if ($data["up_tipoid"] == 1 || $data["up_tipoid"] == 2) {
+            if (is_numeric($data["up_id"])) {
+                if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $data["up_name"])) {
+                    if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $data["up_lastname"])) {
+                        if (preg_match('/^[a-zA-Z0-9]+$/', $data["up_username"])) {
+                            return "ok";
+                        } else {
+                            return "La usuario ingresado contiene carácteres inválidos.";
+                        }
+                    } else {
+                        return "El apellido ingresado contiene carácteres inválidos.";
+                    }
+                } else {
+                    return "El nombre ingresado contiene carácteres inválidos.";
+                }
+            } else {
+                return "Solo puede ingresar números en el id.";
+            }
+        } else {
+            return "Tipo de id inválido.";
+        }
+    }
+    
 
     public static function login($username, $password)
     {
@@ -166,7 +168,7 @@ class UserController
             } else {
                 //self::alert("danger", "El id ingresado ya se encuentra registrado en la base de datos.");
                 $response['state'] = 'error';
-                $response['msg'] = 'El usuario ingresado ya se encuentra registrado en la base de datos.';
+                $response['msg'] = 'El id ingresado ya se encuentra registrado en la base de datos.';
                 // return self::toJson("Error", "Este id ya se encuentra registrado en la base de datos.");
             }
         } else {

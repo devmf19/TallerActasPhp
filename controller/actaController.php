@@ -4,27 +4,33 @@ class ActaController
 {
     public static function validate($data)
     {
-        $now = strtotime(date('Y-m-d'));
-        $date = strtotime($data['new_created_date']);
-        $start_time = strtotime($data['new_start_time']);
-        $end__time = strtotime($data['new_end_time']);
+        $now =  new DateTime("now", new DateTimeZone('America/Bogota'));
+        $now = $now->format('Y-m-d H:i');
+        $initial = $data['new_created_date'] . ' ' . $data['new_start_time'];
+        $end = $data['new_created_date'] . ' ' . $data['new_end_time'];
 
-        if (is_numeric($data['new_creator_id'])) {
-            if ($data['new_issue'] != "") {
-                if ($date >= $now) {
-                    if ($date >= $now) {
-                        return 'ok';
+        $exist = Acta::getBy("issue", $data["new_issue"]);
+
+        if (empty($exist)) {
+            if (is_numeric($data['new_creator_id'])) {
+                if ($data['new_issue'] != "") {
+                    if ($initial >= $now) {
+                        if ($end > $initial) {
+                            return 'ok';
+                        } else {
+                            return "La hora de finalizar el acta no puede ser anterior a la hora de inicio";
+                        }
                     } else {
-                        return "La fecha del acta no puede er anterior al día de hoy";
+                        return "La fecha y hora de inicio del acta no puede ser anterior al día y momento actual";
                     }
                 } else {
-                    return "La fecha del acta no puede ser anterior al día de hoy";
+                    return "El asunto del acta no puede estar vacío";
                 }
             } else {
-                return "El asunto del acta no puede estar vacío";
+                return "El id del usuario solo puede contener números";
             }
         } else {
-            return "El id del usuario solo puede contener números";
+            return "El asunto del acta ya se regitró anteriormente";
         }
     }
 
@@ -42,7 +48,7 @@ class ActaController
     public static function getByIssue($issue)
     {
         $column = "issue";
-        return Acta::getBy($column, $issue);
+        return Acta::getByIssue($issue);
     }
 
     public static function getByCreator($creatorId)
@@ -68,7 +74,8 @@ class ActaController
             'state' => '',
             'msg' => ''
         ];
-        if (!empty($data) && $data["new_issue"] != "") {
+        $validate = self::validate($data);
+        if ($validate == "ok") {
             $rta =  Acta::save($data);
             if ($rta == "ok") {
                 $response['state'] = 'success';
@@ -79,7 +86,7 @@ class ActaController
             }
         } else {
             $response['state'] = 'error';
-            $response['msg'] = 'No se recibió el asunto del acta.';
+            $response['msg'] = $validate;
         }
         return $response;
     }

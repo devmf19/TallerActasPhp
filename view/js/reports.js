@@ -1,3 +1,4 @@
+actaDetail();
 
 function showTableReport(response) {
     if (response.num == '') {
@@ -261,23 +262,59 @@ function issueActas() {
 function users(json) {
     document.getElementById('report-field').innerHTML = '' +
         '<div class="form-group row">' +
-            '<div class="col-xs-10">' +
+        '<div class="col-xs-10">' +
 
-                '<select class="form-control input-lg" id="users-report" name="users-report" required>' +
-                    '<option value="">Creador del acta</option>';
-                    $.each(json, function (id, name) {
-                        $('#users-report').append('<option value=' + name.id + '>' + name.name + '</option>');
-                    });
-                $("#report-field").append('</select>' +
+        '<select class="form-control input-lg" id="users-report" name="users-report" required>' +
+        '<option value="">Creador del acta</option>';
+    $.each(json, function (id, name) {
+        $('#users-report').append('<option value=' + name.id + '>' + name.name + '</option>');
+    });
+    $("#report-field").append('</select>' +
 
-            // '</div>' +
+        // '</div>' +
 
-            '<div class="col-xs-2">' +
-                '<button class="btn btn-primary btn-lg" id="btn-report4" onclick="getByCreator()">Buscar</button>' +
-            '</div>' +
+        '<div class="col-xs-2">' +
+        '<button class="btn btn-primary btn-lg" id="btn-report4" onclick="getByCreator()">Buscar</button>' +
+        '</div>' +
 
         '</div >')
         ;
+}
+
+function actaDetail() {
+    const data = new FormData();
+    const id = $("#detailsActaId").val();
+    const option = "getByActa";
+
+    if (!(id === undefined)) {
+        data.append("id", id);
+        data.append("option", option);
+        $.ajax({
+
+            url: "ajax/actasAjax.php",
+            method: "POST",
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success: function (response) {
+
+                console.log(response);
+                document.getElementById('spanIssue').innerHTML = response[0].issue;
+                document.getElementById('spanCreator').innerHTML = response[0].creator_id;
+                document.getElementById('spanDate').innerHTML = response[0].created_date;
+                document.getElementById('spanStart').innerHTML = response[0].start_time;
+                document.getElementById('spanEnd').innerHTML = response[0].end_time;
+                document.getElementById('spanInCharge').innerHTML = response[0].in_charge;
+                document.getElementById('spanOrder').innerHTML = response[0].order_of_day;
+                document.getElementById('pFactsDescription').innerHTML = response[0].facts_description;
+            }
+
+        });
+    }
+
+
 }
 
 

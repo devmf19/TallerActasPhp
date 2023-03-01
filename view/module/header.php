@@ -22,20 +22,13 @@
         <div class="navbar-custom-menu">
 
             <ul class="nav narvbar-nav">
-                <li class="dropdown user user-menu">
+                <li class="dropdown user user-menu" >
                     <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                        <?php
-                            /*if($_SESSION["foto"]!=""){
-                                echo '<img src="'.$_SESSION["foto"].'" class="img-circle" style="width: 30px; margin-right: 5px;" alt="foto-de-usuario">';
-                            } else {
-                                echo '<img src="view/img/users/default/default-user.png" class="img-circle" style="width: 30px; margin-right: 5px;" alt="foto-de-usuario">';
-                            }*/
-                        ?>
-                        <span class="hidden-xs"><?php echo $_SESSION["name"] ?></span>
+                        <span ><?php echo $_SESSION["name"] ?></span>
                     </a>
 
                     <!-- dropdown -->
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" style="margin: 5px -35px;">
                             <div>
                                 <a href="logout" class="btn btn-danger btn-flat" style="margin: 5px 10px;">Cerrar sesión</a>
                             </div>

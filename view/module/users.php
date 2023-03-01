@@ -149,12 +149,6 @@ if($_SESSION["role"] == "1"){
 
            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
            <button type="submit" class="btn btn-success">Registrar usuario</button>
-           <?php
-
-            // $createUser = new UsersController();
-            // $createUser->ctrCreateUser();
-
-            ?>
          </div>
        </form>
      </div>
@@ -292,21 +286,7 @@ if($_SESSION["role"] == "1"){
           <button type="button" class="btn btn-success" onclick="updateUser()" data-dismiss="modal">Actualizar usuario</button>
 
         </div>
-
-         <?php
-
-            //$update = new UsersAjax();
-
-          ?>
-
        </form>
      </div>
    </div>
  </div>
-
- <?php
-
-  // $deleteUser = new UsersController();
-  // $deleteUser->ctrDeleteUser();
-
-  ?>
